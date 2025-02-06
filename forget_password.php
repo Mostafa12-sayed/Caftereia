@@ -23,13 +23,12 @@
         <div class="right-section">
             <span class="fs-14 fw-blod">Welcome To</span>
             <h1 class="m-0">Caftereia</h1>
-            <form action="{{ route('login') }}" method="POST">
+            <form action="" method="POST">
                 <div class="form-group">
                     <label for="email">E-mail</label>
                     <input type="text" id="email" name="email_or_username" placeholder="Enter your email"
                         value="">
                 </div>
-                
                 <div class="form-group txt-c">
                     <button type="submit" class="btn mb-20">Submit</button>
                     <a href="login.php">Login</a>
@@ -54,7 +53,7 @@
         const passwordInput = document.getElementById('password');
         const togglePassword = document.getElementById('toggle-password');
 
-        togglePassword.addEventListener('click', function () {
+        togglePassword.addEventListener('click', function() {
             const type = passwordInput.type === 'password' ? 'text' : 'password';
             passwordInput.type = type;
             this.classList.toggle('fa-eye-slash');
