@@ -1,67 +1,78 @@
-document.addEventListener('DOMContentLoaded', () => {
-    let selectedProducts = JSON.parse(localStorage.getItem('selectedProducts')) || [];
-    
-    // User selection
-    document.getElementById('userSelect').addEventListener('change', (e) => {
-        document.getElementById('selected_user').value = e.target.value;
-    });
+document.addEventListener("DOMContentLoaded", () => {
+  let selectedProducts =
+    JSON.parse(localStorage.getItem("selectedProducts")) || [];
 
-    // Product selection
-    document.querySelectorAll('.product-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const productId = parseInt(card.dataset.id);
-            const productName = card.querySelector('h6').textContent;
-            const productPrice = parseFloat(card.querySelector('.price').textContent);
-            const productImage = card.querySelector('img').src.split('/').pop();
-            
-            if (!selectedProducts.some(p => p.id === productId)) {
-                selectedProducts.push({
-                    id: productId,
-                    name: productName,
-                    price: productPrice,
-                    image: productImage,
-                    quantity: 1
-                });
-                updateSelectedProducts();
-                calculateTotal();
-            }
+  // User selection
+  document.getElementById("userSelect").addEventListener("change", (e) => {
+    document.getElementById("selected_user").value = e.target.value;
+  });
+
+  // Product selection
+  document.querySelectorAll(".product-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const productId = parseInt(card.dataset.id);
+      const productName = card.querySelector("h6").textContent;
+      const productPrice = parseFloat(card.querySelector(".price").textContent);
+      const productImage = card.querySelector("img").src.split("/").pop();
+
+      if (!selectedProducts.some((p) => p.id === productId)) {
+        selectedProducts.push({
+          id: productId,
+          name: productName,
+          price: productPrice,
+          image: productImage,
+          quantity: 1,
         });
-    });
-
-    // Quantity controls
-    document.querySelector('.selected-products').addEventListener('click', (e) => {
-        const productItem = e.target.closest('.selected-product-item');
-        if (!productItem) return;
-
-        const productId = parseInt(productItem.dataset.id);
-        const product = selectedProducts.find(p => p.id === productId);
-        
-        if (e.target.classList.contains('btn-decrease')) {
-            if (product.quantity > 1) {
-                product.quantity--;
-            } else {
-                selectedProducts = selectedProducts.filter(p => p.id !== productId);
-            }
-        } else if (e.target.classList.contains('btn-increase')) {
-            product.quantity++;
-        } else if (e.target.closest('.btn-remove')) {
-            selectedProducts = selectedProducts.filter(p => p.id !== productId);
-        }
-
         updateSelectedProducts();
         calculateTotal();
+      }
+    });
+  });
+
+  // Quantity controls
+  document
+    .querySelector(".selected-products")
+    .addEventListener("click", (e) => {
+      const productItem = e.target.closest(".selected-product-item");
+      if (!productItem) return;
+
+      const productId = parseInt(productItem.dataset.id);
+      const product = selectedProducts.find((p) => p.id === productId);
+
+      if (e.target.classList.contains("btn-decrease")) {
+        if (product.quantity > 1) {
+          product.quantity--;
+        } else {
+          selectedProducts = selectedProducts.filter((p) => p.id !== productId);
+        }
+      } else if (e.target.classList.contains("btn-increase")) {
+        product.quantity++;
+      } else if (e.target.closest(".btn-remove")) {
+        selectedProducts = selectedProducts.filter((p) => p.id !== productId);
+      }
+
+      updateSelectedProducts();
+      calculateTotal();
     });
 
-    // Update display
-    function updateSelectedProducts() {
-        const container = document.querySelector('.selected-products');
-        container.innerHTML = selectedProducts.map(product => `
-            <div class="d-flex align-items-center p-2 border rounded mb-2 selected-product-item" data-id="${product.id}">
-                <img src="assets/images/products/${product.image}" class="product-thumbnail">  
+  // Update display
+  function updateSelectedProducts() {
+    const container = document.querySelector(".selected-products");
+    container.innerHTML = selectedProducts
+      .map(
+        (product) => `
+            <div class="d-flex align-items-center p-2 border rounded mb-2 selected-product-item" data-id="${
+              product.id
+            }">
+                <img src="assets/images/products/${
+                  product.image
+                }" class="product-thumbnail">  
                 <div class="ms-2 flex-grow-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <label class="fw-bold">${product.name}</label>
-                        <span class="text-primary">EGP ${product.price.toFixed(2)}</span>
+                        <span class="text-primary">EGP ${product.price.toFixed(
+                          2
+                        )}</span>
                     </div>
                     <div class="d-flex align-items-center mt-1">
                         <div class="input-group input-group-sm" style="width: 100px;">
@@ -76,28 +87,50 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </div>
-        `).join('');
-        
-        localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
-    }
+        `
+      )
+      .join("");
 
-    // Calculate total
-    function calculateTotal() {
-        const total = selectedProducts.reduce((sum, product) => sum + (product.price * product.quantity), 0);
-        document.querySelector('.order-total .h5').textContent = `EGP ${total.toFixed(2)}`;
-    }
+    localStorage.setItem("selectedProducts", JSON.stringify(selectedProducts));
+  }
 
-    // Form submission
-    document.getElementById('orderForm').addEventListener('submit', (e) => {
-        document.getElementById('products_json').value = JSON.stringify(selectedProducts.map(p => ({
-            id: p.id,
-            quantity: p.quantity
-        })));
-        
-        localStorage.removeItem('selectedProducts');
-    });
+  // Calculate total
+  function calculateTotal() {
+    const total = selectedProducts.reduce(
+      (sum, product) => sum + product.price * product.quantity,
+      0
+    );
+    document.querySelector(
+      ".order-total .h5"
+    ).textContent = `EGP ${total.toFixed(2)}`;
+  }
 
-    // Initial load
-    updateSelectedProducts();
-    calculateTotal();
+  // Form submission
+  document.getElementById("orderForm").addEventListener("submit", (e) => {
+    document.getElementById("products_json").value = JSON.stringify(
+      selectedProducts.map((p) => ({
+        id: p.id,
+        quantity: p.quantity,
+      }))
+    );
+
+    localStorage.removeItem("selectedProducts");
+  });
+
+  // Initial load
+  updateSelectedProducts();
+  calculateTotal();
+});
+
+document
+  .getElementById("profileToggle")
+  .addEventListener("click", function (event) {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display =
+      dropdown.style.display === "block" ? "none" : "block";
+    event.stopPropagation();
+  });
+
+document.addEventListener("click", function () {
+  document.getElementById("dropdownMenu").style.display = "none";
 });
