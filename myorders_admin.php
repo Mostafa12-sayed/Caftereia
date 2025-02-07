@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand" href="#">
-            <img src="assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle">
+            <img src="assets/images/logo.jpg" class="Cafeteria-Logo rounded-circle" alt="Cafeteria Logo"  height="70">
         </a>
 
         <!-- Navbar Toggle Button for Mobile -->
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
                 <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
-                <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
+                <li class="nav-item"><a class="nav-link active fw-bold" href="myorders_admin.php">Manual Order</a></li>
                 <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
             </ul>
 
