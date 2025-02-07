@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['login']) && $_SESSION['login'] != true) {
+    header('Location: login.php');
+    exit;
+}
 require_once 'connection_db.php';
 require_once 'myorders_function.php';
 
@@ -13,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user_id && $room && $products_data) {
         $order_id = createOrder($user_id, $room, $notes, $products_data);
-        
+
         if ($order_id) {
             header('Location: myorders_admin.php?success=1');
             exit;
@@ -25,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,56 +38,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="assets/css/myorders_admin.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand" href="#">
-            <img src="assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle">
-        </a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle">
+            </a>
 
-        <!-- Navbar Toggle Button for Mobile -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Collapsible Menu -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
-                <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
-                <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
-            </ul>
-
-            <!-- Profile Section -->
-            <div class="d-flex align-items-center gap-3">
-                <div class="admin-profile d-flex align-items-center">
-                    <img src="assets/images/profile_img/default.jpg" class="rounded-circle"  height="70">
-                    <span class="ms-2 fw-bold">Admin</span>
+            <!-- Navbar Toggle Button for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Collapsible Menu -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
+                    <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
+                    <li class="nav-item"><a class="nav-link" href="orders.php">Orders</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="admin-profile d-flex align-items-center" id="profileToggle">
+                        <img src="assets/images/profile_img/<?= isset($_SESSION['profile_img']) ? $_SESSION['profile_img'] : 'default.jpg' ?>" class="rounded-circle" height="70">
+                        <span class="ms-2 fw-bold"><?= $_SESSION['name'] ?></span>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="#">Profile</a>
+                            <a href="logout.php">Logout</a>
+                        </div>
+                    </div>
                 </div>
+
+
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 
     <div class="container-fluid py-4">
         <?php if (isset($_GET['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Order created successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Order created successfully!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php endif; ?>
-        
+
         <?php if (isset($_GET['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            Error creating order. Please try again.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Error creating order. Please try again.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php endif; ?>
 
         <div class="row g-4">
@@ -133,26 +143,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <h5 class="mb-0">Select User</h5>
                             <select class="form-select" id="userSelect" style="width: auto;">
                                 <?php foreach ($users as $user): ?>
-                                <option value="<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></option>
+                                    <option value="<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
 
                         <div class="row row-cols-2 row-cols-md-4 g-4">
                             <?php foreach ($products as $product): ?>
-                            <div class="col">
-                                <div class="product-card" data-id="<?= $product['id'] ?>">
-                                    <div class="product-image-container">
-                                        <img src="assets/images/products/<?= htmlspecialchars($product['image']) ?>" 
-                                             class="product-image" 
-                                             alt="<?= htmlspecialchars($product['name']) ?>">
-                                    </div>
-                                    <div class="product-info">
-                                        <h6 class="mb-1"><?= htmlspecialchars($product['name']) ?></h6>
-                                        <span class="price"><?= number_format($product['price'], 2) ?> EGP</span>
+                                <div class="col">
+                                    <div class="product-card" data-id="<?= $product['id'] ?>">
+                                        <div class="product-image-container">
+                                            <img src="assets/images/products/<?= htmlspecialchars($product['image']) ?>"
+                                                class="product-image"
+                                                alt="<?= htmlspecialchars($product['name']) ?>">
+                                        </div>
+                                        <div class="product-info">
+                                            <h6 class="mb-1"><?= htmlspecialchars($product['name']) ?></h6>
+                                            <span class="price"><?= number_format($product['price'], 2) ?> EGP</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -164,4 +174,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/myorders_admin.js"></script>
 </body>
+
+
 </html>

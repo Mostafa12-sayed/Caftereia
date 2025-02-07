@@ -8,15 +8,15 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 
 $error = '';
 if (!empty($_SESSION['email_err'])) {
-    $error .= '<div class="alert alert-danger m-0" role="alert">' . $_SESSION['email_err'] . '</div>';
+    $error_email = '<span class=" alert-danger m-0" >' . $_SESSION['email_err'] . '</span>';
     unset($_SESSION['email_err']);
 }
 if (!empty($_SESSION['password_err'])) {
-    $error .= '<div class="alert alert-danger m-0" role="alert">' . $_SESSION['password_err'] . '</div>';
+    $error_password = '<span class=" alert-danger m-0" >' . $_SESSION['password_err'] . '</span>';
     unset($_SESSION['password_err']);
 }
 if (!empty($_SESSION['error'])) {
-    $error .= '<div class="alert alert-danger m-0" role="alert">' . $_SESSION['error'] . '</div>';
+    $error = '<span class=" alert-danger m-0" >' . $_SESSION['error'] . '</span>';
     unset($_SESSION['error']);
 }
 ?>
@@ -40,24 +40,36 @@ if (!empty($_SESSION['error'])) {
             <img src="assets/images/login-2.jpg" id="image-2">
         </div>
         <div class="right-section">
+            <?= $error ?>
+
             <span class="fs-14 fw-bold">Welcome To</span>
             <h1 class="m-0 mb-20">Cafeteria</h1>
             <form action="login_process.php" method="POST">
+
                 <div class="form-group">
                     <label for="email">E-mail</label>
                     <input type="text" id="email" name="email" placeholder="Enter your email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                    <?php if (isset($error_email)) {
+                        echo $error_email;
+                    } ?>
                 </div>
 
                 <!-- Display error messages -->
-                <?= $error ?>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password">
-                    <i class="fas fa-eye toggle-password" id="toggle-password"></i>
+                    <div class="p-relative">
+                        <input type="password" id="password" name="password" placeholder="Enter your password">
+                        <i class="fas fa-eye toggle-password" id="toggle-password"></i>
+                    </div>
+                    <div>
+                        <?php if (isset($error_password)) {
+                            echo $error_password;
+                        } ?>
+                    </div>
                 </div>
 
-                <div class="form-group txt-c">
+                <div class="form-group txt-c mt-10">
                     <button type="submit" class="btn mb-20">Login</button>
                     <a href="forget_password.php">Forget Password?</a>
                 </div>
