@@ -1,0 +1,81 @@
+.product-card {
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(10, 10, 10, 0.1);
+}
+
+.product-image-container {
+    height: 120px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-image {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    padding: 10px;
+}
+
+.product-info {
+    padding: 1rem;
+    background: white;
+    border-top: 1px solid #dee2e6;
+}
+
+.selected-product-item {
+    transition: background-color 0.2s;
+}
+
+.selected-product-item:hover {
+    background-color: #f8f9fa;
+}
+
+.product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.quantity-input {
+    width: 70px !important;
+    text-align: center;
+}
+
+.order-total .h5 {
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.input-group{
+    flex-wrap: nowrap !important;
+}
+/* .Cafeteria-Logo{
+    height: 60px !important;
+    border-radius: 50% !important;
+} */
+
+.product-thumbnail {
+    width: 50px; 
+    height: 50px; 
+    object-fit: cover; 
+    border-radius: 5px; 
+}
+

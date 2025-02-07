@@ -1,3 +1,28 @@
+<?php
+session_start();
+require_once 'connection_db.php';
+require_once 'myorders_function.php';
+
+$users = getUsers();
+$products = getProducts();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $user_id = filter_input(INPUT_POST, 'user', FILTER_VALIDATE_INT);
+    $notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
+    $room = filter_input(INPUT_POST, 'room', FILTER_SANITIZE_STRING);
+    $products_data = json_decode($_POST['products_json'], true);
+
+    if ($user_id && $room && $products_data) {
+        $order_id = createOrder($user_id, $room, $notes, $products_data);
+        
+        if ($order_id) {
+            header('Location: myorders_admin.php?success=1');
+            exit;
+        }
+    }
+    header('Location: myorders_admin.php?error=1');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,97 +31,78 @@
     <title>Admin - Create Order</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/myorders_admin.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="assets/images/logo.png" alt="Cafeteria Logo" height="40">
-            </a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
-                    <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
-                    <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
-                </ul>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="search-container">
-                        <input type="text" class="form-control search-input" id="searchInput" placeholder="Search products...">
-                        <i class="fas fa-search search-icon"></i>
-                    </div>
-                    <div class="admin-profile">
-                        <img src="assets/images/admin-avatar.png" class="rounded-circle" width="40" height="40">
-                        <span class="ms-2 fw-bold">admin</span>
-                    </div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle">
+        </a>
+
+        <!-- Navbar Toggle Button for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
+                <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
+                <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
+                <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
+            </ul>
+
+            <!-- Profile Section -->
+            <div class="d-flex align-items-center gap-3">
+                <div class="admin-profile d-flex align-items-center">
+                    <img src="assets/images/profile_img/default.jpg" class="rounded-circle"  height="70">
+                    <span class="ms-2 fw-bold">Admin</span>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <div class="container-fluid py-4">
+        <?php if (isset($_GET['success'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Order created successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
+        
+        <?php if (isset($_GET['error'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Error creating order. Please try again.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
+
         <div class="row g-4">
-            <!-- Order Form Section -->
             <div class="col-md-4">
                 <div class="card shadow-sm">
                     <div class="card-header bg-white">
                         <h5 class="card-title mb-0">Create Order</h5>
                     </div>
                     <div class="card-body">
-                        <form id="orderForm">
-                            <div class="selected-products mb-4">
-                                <div class="d-flex align-items-center p-2 border rounded mb-2">
-                                    <img src="assets/images/products/tea.jpg" class="product-thumbnail">
-                                    <div class="ms-2 flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <label class="fw-bold">Tea</label>
-                                            <span class="text-primary">EGP 25</span>
-                                        </div>
-                                        <div class="d-flex align-items-center mt-1">
-                                            <div class="input-group input-group-sm" style="width: 100px;">
-                                                <button type="button" class="btn btn-outline-secondary btn-decrease">-</button>
-                                                <input type="number" name="tea_qty" class="form-control text-center" value="5">
-                                                <button type="button" class="btn btn-outline-secondary btn-increase">+</button>
-                                            </div>
-                                            <button type="button" class="btn btn-sm btn-outline-danger ms-2">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-center p-2 border rounded mb-2">
-                                    <img src="assets/images/products/cola.jpg" class="product-thumbnail">
-                                    <div class="ms-2 flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <label class="fw-bold">Cola</label>
-                                            <span class="text-primary">EGP 30</span>
-                                        </div>
-                                        <div class="d-flex align-items-center mt-1">
-                                            <div class="input-group input-group-sm" style="width: 100px;">
-                                                <button type="button" class="btn btn-outline-secondary btn-decrease">-</button>
-                                                <input type="number" name="cola_qty" class="form-control text-center" value="3">
-                                                <button type="button" class="btn btn-outline-secondary btn-increase">+</button>
-                                            </div>
-                                            <button type="button" class="btn btn-sm btn-outline-danger ms-2">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <form id="orderForm" method="POST">
+                            <div class="selected-products mb-4"></div>
 
                             <div class="form-group mb-3">
                                 <label class="form-label">Notes</label>
-                                <textarea class="form-control" name="notes" rows="2" placeholder="Add special instructions...">1 Tea Extra Sugar</textarea>
+                                <textarea class="form-control" name="notes" rows="2" placeholder="Add special instructions..."></textarea>
                             </div>
 
                             <div class="form-group mb-4">
                                 <label class="form-label">Room</label>
-                                <select class="form-select" name="room">
+                                <select class="form-select" name="room" required>
                                     <option value="">Select Room</option>
                                     <option value="room1">Room 1</option>
                                     <option value="room2">Room 2</option>
@@ -107,80 +113,47 @@
                             <div class="d-flex justify-content-between align-items-center border-top pt-3">
                                 <div class="order-total">
                                     <span class="text-muted">Total:</span>
-                                    <span class="h5 mb-0 ms-2">EGP 55</span>
+                                    <span class="h5 mb-0 ms-2">EGP 0</span>
                                 </div>
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-check me-2"></i>Confirm Order
                                 </button>
                             </div>
+                            <input type="hidden" name="products_json" id="products_json">
+                            <input type="hidden" name="user" id="selected_user" value="<?= $users[0]['id'] ?? '' ?>">
                         </form>
                     </div>
                 </div>
             </div>
 
-            <!-- Products Grid Section -->
             <div class="col-md-8">
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="mb-0">Add to user</h5>
+                            <h5 class="mb-0">Select User</h5>
                             <select class="form-select" id="userSelect" style="width: auto;">
-                                <option>Islam Askar</option>
-                                <option>Other Users...</option>
+                                <?php foreach ($users as $user): ?>
+                                <option value="<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
 
                         <div class="row row-cols-2 row-cols-md-4 g-4">
-                            <!-- Tea Products -->
+                            <?php foreach ($products as $product): ?>
                             <div class="col">
-                                <div class="product-card">
+                                <div class="product-card" data-id="<?= $product['id'] ?>">
                                     <div class="product-image-container">
-                                        <img src="assets/images/products/tea-1.jpg" class="product-image">
+                                        <img src="assets/images/products/<?= htmlspecialchars($product['image']) ?>" 
+                                             class="product-image" 
+                                             alt="<?= htmlspecialchars($product['name']) ?>">
                                     </div>
                                     <div class="product-info">
-                                        <h6 class="mb-1">Tea</h6>
-                                        <span class="price">5 LE</span>
+                                        <h6 class="mb-1"><?= htmlspecialchars($product['name']) ?></h6>
+                                        <span class="price"><?= number_format($product['price'], 2) ?> EGP</span>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col">
-                                <div class="product-card">
-                                    <div class="product-image-container">
-                                        <img src="assets/images/products/tea-2.jpg" class="product-image">
-                                    </div>
-                                    <div class="product-info">
-                                        <h6 class="mb-1">Tea Extra Sugar</h6>
-                                        <span class="price">6 LE</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="product-card">
-                                    <div class="product-image-container">
-                                        <img src="assets/images/products/coffee.jpg" class="product-image">
-                                    </div>
-                                    <div class="product-info">
-                                        <h6 class="mb-1">Coffee</h6>
-                                        <span class="price">8 LE</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="product-card">
-                                    <div class="product-image-container">
-                                        <img src="assets/images/products/nescafe.jpg" class="product-image">
-                                    </div>
-                                    <div class="product-info">
-                                        <h6 class="mb-1">Nescafe</h6>
-                                        <span class="price">9 LE</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- More products... -->
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -189,6 +162,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="assets/js/admin-order.js"></script> -->
+    <script src="assets/js/myorders_admin.js"></script>
 </body>
 </html>
