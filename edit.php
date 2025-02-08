@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="container my-3">
     <h3 class="mb-4 text-black border-bottom border-black">
         <b>Edit User:</b> <?php echo htmlspecialchars($User['name']); ?>
-        <a href="allUsers.php" class="btn p-3 m-3 btn-dark">Back to Students</a>
+        <a href="allUsers.php" class="btn p-3 m-3 btn-dark">Back to Users</a>
     </h3>
 
     <div class="card text-white bg-dark mb-3 p-5" style="width: 50rem;">
