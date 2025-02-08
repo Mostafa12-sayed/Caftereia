@@ -3,7 +3,7 @@ require_once 'connection_db.php';
 
 function getUsers() {
     global $pdo;
-    $stmt = $pdo->query("SELECT id, name FROM Users");
+    $stmt = $pdo->query("SELECT id, name, profile_image FROM Users");
     return $stmt->fetchAll();
 }
 

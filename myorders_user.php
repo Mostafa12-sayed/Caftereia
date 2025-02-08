@@ -15,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $order_id = createOrder($user_id, $room, $notes, $products_data);
         
         if ($order_id) {
-            header('Location: myorders_admin.php?success=1');
+            header('Location: myorders_user.php?success=1');
             exit;
         }
     }
-    header('Location: myorders_admin.php?error=1');
+    header('Location: myorders_user.php?error=1');
     exit;
 }
 ?>
@@ -130,15 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="col-md-8">
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="mb-0">Select User</h5>
-                            <select class="form-select" id="userSelect" style="width: auto;">
-                                <?php foreach ($users as $user): ?>
-                                <option value="<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
+                        
                         <div class="row row-cols-2 row-cols-md-4 g-4">
                             <?php foreach ($products as $product): ?>
                             <div class="col">
