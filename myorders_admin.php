@@ -3,6 +3,13 @@ session_start();
 require_once 'connection_db.php';
 require_once 'myorders_function.php';
 
+
+// if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
+//     header('Location: login.php');
+//     exit;
+// }
+
+
 $users = getUsers();
 $products = getProducts();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -60,11 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- Profile Section -->
             <div class="d-flex align-items-center gap-3">
-                <div class="admin-profile d-flex align-items-center">
-                    <img src="assets/images/profile_img/<?= $users[0]['profile_image'] ?? '' ?>" class="rounded-circle"  height="70">
-                    <span class="ms-2 fw-bold"><?= $users[0]['name'] ?? '' ?></span>
+                    <div class="admin-profile d-flex align-items-center" id="profileToggle">
+                        <img src="assets/images/profile_img/<?= isset($_SESSION['profile_img']) ? $_SESSION['profile_img'] : 'default.jpg' ?>" class="rounded-circle" height="70">
+                        <span class="ms-2 fw-bold"><?= $_SESSION['name'] ?></span>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="#">Profile</a>
+                            <a href="logout.php">Logout</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 </nav>
