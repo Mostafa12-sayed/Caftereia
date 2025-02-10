@@ -1,0 +1,20 @@
+
+// ordered 2x tea and burger
+INSERT INTO `cafeteria_db`.`orders` (`user_id`, `total_price`, `status`, `date`, `notes`, `room`) VALUES ('2', '21', 'completed', '2025-01-01 5:00:00', 'extra sugar', '102');
+INSERT INTO `cafeteria_db`.`order_items` (`order_id`, `product_id`, `quantity`) VALUES ('6', '2', '2');
+INSERT INTO `cafeteria_db`.`order_items` (`order_id`, `product_id`, `quantity`) VALUES ('6', '3', '1');
+
+// old user orders quwery 
+$query="select users.name as user_name,
+        orders.date,
+        products.name as product_name,
+        order_items.quantity,
+        orders.room,
+        orders.status,
+        orders.total_price
+        from orders join order_items 
+        on orders.id=order_items.order_id
+        join products on products.id=order_items.product_id
+        join users on users.id=orders.user_id
+        where users.id=2;";
+        

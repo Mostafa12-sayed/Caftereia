@@ -17,26 +17,31 @@ function connect_to_database(){
     }
 }
 
-function user_previous_orders(){
-    $db_object=connect_to_database();
-    try{
-        $query="select orders.date,
-        products.name,
-        order_items.quantity,
-        orders.room,
-        orders.status,
-        orders.total_price
-        from orders join order_items 
-        on orders.id=order_items.order_id
-        join products on products.id=order_items.product_id
-        join users on users.id=orders.user_id
-        where users.id=1;";
-        $stmt=$db_object->prepare($query);
+function user_previous_orders()
+{
+    $db_object = connect_to_database();
+    try {
+        $query =
+            "SELECT 
+            users.name AS user_name,
+            orders.date,
+            GROUP_CONCAT(CONCAT(products.name, ' (x', order_items.quantity, ')')) AS products_ordered,
+            orders.room,
+            orders.status,
+            orders.total_price,
+            orders.notes
+        FROM orders
+        JOIN order_items ON orders.id = order_items.order_id
+        JOIN products ON products.id = order_items.product_id
+        JOIN users ON users.id = orders.user_id
+        WHERE users.id = 2
+        GROUP BY orders.id, users.name, orders.date, orders.room, orders.status, orders.total_price;";
+        $stmt = $db_object->prepare($query);
         $stmt->execute();
-        $res=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $res;
-    }catch(PDOException $e){
-        echo "Error: ". $e->getMessage();
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
 }
 
@@ -84,17 +89,11 @@ function all_products(){
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand" href="#">
-            <img src="assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle">
+            <img src="../assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle" style="width: 80px; border-radius:5px;">
         </a>
 
-        <!-- Navbar Toggle Button for Mobile -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
         <!-- Collapsible Menu -->
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse navbar-light bg-light" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
@@ -107,59 +106,65 @@ function all_products(){
             <!-- Profile Section -->
             <div class="d-flex align-items-center gap-3">
                 <div class="admin-profile d-flex align-items-center">
-                    <img src="assets/images/profile_img/default.jpg" class="rounded-circle"  height="70">
-                    <span class="ms-2 fw-bold">Admin</span>
+                    <img src="../assets/images/profile_img/default.jpg" class="rounded-circle"  height="70">
+                    <span class="ms-2 fw-bold">User</span>
                 </div>
             </div>
         </div>
     </div>
 </nav>
 
-<table class="table table-stripped table-sm">
-  <thead>
-  <?php $i=0;?>
-    <tr>
-      <th scope="col"></th>
+<div class="col-8 container">
+<h2 class="mb-5">Previos orders</h2>
+    <table class="table table-stripped " style="background-color: #7e6d63; color:aliceblue; border-radius: 5px;">
+        <thead>
+            <?php $i=0;?>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
       <th scope="col">Date</th>
       <th scope="col">Product</th>
-      <th scope="col">Quantity</th>
       <th scope="col">Room</th>
       <th scope="col">Status</th>
       <th scope="col">Total order</th>
+      <th scope="col">Notes</th>
     </tr>
-  </thead>
-  <tbody>
+</thead>
+<tbody>
     <?php foreach($res as $res)  
-    echo "<tr>
-        <th scope='row'><?php echo $i++; ?></th>
-        <td>$res[date]</td>
-        <td>$res[name]</td>
-        <td>$res[quantity]</td>
-        <td>$res[room]</td>
-        <td>$res[status]</td>
-        <td>$res[total_price]</td>
-        </tr>"
-        ?>
+    echo "<tr data-bs-toggle='collapse' href='#collapseExample' role='button' aria-expanded='false' aria-controls='collapseExample'>
+<th scope='row'><?php echo $i++; ?></th>
+<td>$res[user_name]</td>
+<td>$res[date]</td>
+<td>$res[products_ordered]</td>
+<td>$res[room]</td>
+<td>$res[status]</td>
+<td>$res[total_price] LE</td>
+<td>$res[notes]</td>
+</tr>"
+?>
   </tbody>
 </table>
+</div>
 
-<p>
-  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Link with href
-  </a>
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Button with data-target
-  </button>
-</p>
 <div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  <div class="details">
+    <h5 class="">Order Details</h5>
+    <div class="row">
+        <div class="col-md-4">
+          <img src="<?php echo $res['image'];?>" class="img-fluid">
+          <h6 class="mt-3"><?php echo $res['name'];?></h6>
+        </div>
+    </div>
+  
   </div>
 </div>
 
 
-    
+
+
+
+    <script src="./styling.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/myorders_admin.js"></script>
 </body>
 </html>
