@@ -4,10 +4,10 @@ require_once 'connection_db.php';
 require_once 'myorders_function.php';
 
 
-// if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
-//     header('Location: login.php');
-//     exit;
-// }
+if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
+    header('Location: login.php');
+    exit;
+}
 
 
 $users = getUsers();
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <!-- Error creating order. Please try again. -->
+            
             Please Enter your order.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
