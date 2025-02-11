@@ -4,10 +4,10 @@ require_once 'connection_db.php';
 require_once 'myorders_function.php';
 
 
-if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
-    header('Location: login.php');
-    exit;
-}
+// if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
+//     header('Location: login.php');
+//     exit;
+// }
 
 
 $users = getUsers();
@@ -40,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="assets/css/myorders_admin.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body class="">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+<nav class="navbar navbar-expand-lg  bg-white border-bottom">
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand" href="#">
