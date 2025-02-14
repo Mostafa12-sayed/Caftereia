@@ -1,32 +1,36 @@
-document.addEventListener("DOMContentLoaded", () => {
-  let selectedProducts =
-    JSON.parse(localStorage.getItem("selectedProducts")) || [];
-
-  // User selection
-  document.getElementById("userSelect").addEventListener("change", (e) => {
-    document.getElementById("selected_user").value = e.target.value;
-  });
-
-  // Product selection
-  document.querySelectorAll(".product-card").forEach((card) => {
-    card.addEventListener("click", () => {
-      const productId = parseInt(card.dataset.id);
-      const productName = card.querySelector("h6").textContent;
-      const productPrice = parseFloat(card.querySelector(".price").textContent);
-      const productImage = card.querySelector("img").src.split("/").pop();
-
-      if (!selectedProducts.some((p) => p.id === productId)) {
-        selectedProducts.push({
-          id: productId,
-          name: productName,
-          price: productPrice,
-          image: productImage,
-          quantity: 1,
+document.addEventListener('DOMContentLoaded', () => {
+    let selectedProducts = JSON.parse(localStorage.getItem('selectedProducts')) || [];
+    
+    // Admin-only: User selection logic
+    const userSelect = document.getElementById('userSelect');
+    if (userSelect) {
+        userSelect.addEventListener('change', (e) => {
+            document.getElementById('selected_user').value = e.target.value;
         });
-        updateSelectedProducts();
-        calculateTotal();
-      }
-    });
+    }
+
+    // Product selection (for both admin and user)
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const productId = parseInt(card.dataset.id);
+            const productName = card.querySelector('h6').textContent;
+            const productPrice = parseFloat(
+                card.querySelector('.price').textContent.replace('EGP', '').trim()
+            );
+            const productImage = card.querySelector('img').src.split('/').pop();
+
+            // Add product if not already selected
+            if (!selectedProducts.some(p => p.id === productId)) {
+                selectedProducts.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    image: productImage,
+                    quantity: 1
+                });
+                updateSelectedProducts();
+                calculateTotal();
+            }
   });
 
   // Quantity controls

@@ -7,6 +7,13 @@ if (!isset($_SESSION['login']) && $_SESSION['login'] != true) {
 require_once 'connection_db.php';
 require_once 'myorders_function.php';
 
+
+if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
+    header('Location: login.php');
+    exit;
+}
+
+
 $users = getUsers();
 $products = getProducts();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,31 +46,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="assets/css/myorders_admin.css" rel="stylesheet">
 </head>
 
-<body class="bg-light">
+<body class="">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <a class="navbar-brand" href="#">
-                <img src="assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle">
-            </a>
+<nav class="navbar navbar-expand-lg  bg-white border-bottom">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="assets/images/logo.jpg" class="Cafeteria-Logo rounded-circle" alt="Cafeteria Logo"  height="70">
+        </a>
 
-            <!-- Navbar Toggle Button for Mobile -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Collapsible Menu -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
-                    <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
-                    <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
-                    <li class="nav-item"><a class="nav-link" href="orders.php">Orders</a></li>
-                </ul>
-                <div class="d-flex align-items-center gap-3">
+        <!-- Navbar Toggle Button for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
+                <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
+                <li class="nav-item"><a class="nav-link active fw-bold" href="myorders_admin.php">Manual Order</a></li>
+                <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
+            </ul>
+
+            <!-- Profile Section -->
+            <div class="d-flex align-items-center gap-3">
+
                     <div class="admin-profile d-flex align-items-center" id="profileToggle">
                         <img src="assets/images/profile_img/<?= isset($_SESSION['profile_img']) ? $_SESSION['profile_img'] : 'default.jpg' ?>" class="rounded-circle" height="70">
                         <span class="ms-2 fw-bold"><?= $_SESSION['name'] ?></span>
@@ -73,9 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                 </div>
-
-
-            </div>
         </div>
     </nav>
 
@@ -89,10 +96,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <?php if (isset($_GET['error'])): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Error creating order. Please try again.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            
+            Please Enter your order.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <?php endif; ?>
 
         <div class="row g-4">
