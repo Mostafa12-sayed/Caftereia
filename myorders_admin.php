@@ -4,9 +4,9 @@ if (!isset($_SESSION['login']) && $_SESSION['login'] != true) {
     header('Location: login.php');
     exit;
 }
-require_once 'connection_db.php';
-require_once 'myorders_function.php';
 
+require_once 'myorders_function.php';
+// connect_to_db_pdo();
 $users = getUsers();
 $products = getProducts();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="allUsers.php">Users</a></li>
                     <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
                     <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
                     <li class="nav-item"><a class="nav-link" href="orders.php">Orders</a></li>

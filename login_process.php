@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('db_connection.php');
+require_once('./db/db_connection.php');
 
 $con = OpenCon();
 
@@ -14,7 +14,7 @@ if (validateInput($email, $password)) {
   header("location: login.php");
 }
 
-CloseCon($con);
+
 
 // Function to validate input
 function validateInput($email, $password)

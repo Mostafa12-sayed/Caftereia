@@ -1,10 +1,11 @@
 <?php
 session_start();
+
+
 if (!isset($_SESSION['login']) && $_SESSION['login'] != true && $_SESSION['role'] != 'admin') {
     header('Location: login.php');
     exit;
 }
-require_once 'connection_db.php';
 require_once 'orders_functions.php';
 ?>
 <!DOCTYPE html>
@@ -55,8 +56,8 @@ require_once 'orders_functions.php';
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
-                    <li class="nav-item"><a class="nav-link" href="manual_order.php">Manual Order</a></li>
+                    <li class="nav-item"><a class="nav-link" href="allUsers.php">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="myorders_admin.php">Manual Order</a></li>
                     <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
                     <li class="nav-item"><a class="nav-link active fw-bold" href="orders.php">Orders</a></li>
                 </ul>
@@ -88,7 +89,6 @@ require_once 'orders_functions.php';
                     </div>
                     <div class="col-sm-8">
                         <a href="#" class="btn btn-primary"><i class="material-icons">&#xE863;</i> <span>Refresh List</span></a>
-                        <a href="#" class="btn btn-info"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>
                     </div>
                 </div>
             </div>
@@ -112,89 +112,50 @@ require_once 'orders_functions.php';
                             <label>Name</label>
                             <input type="text" class="form-control">
                         </div>
-                        <div class="filter-group">
-                            <label>Location</label>
-                            <select class="form-control">
-                                <option>All</option>
-                                <option>Berlin</option>
-                                <option>London</option>
-                                <option>Madrid</option>
-                                <option>New York</option>
-                                <option>Paris</option>
-                            </select>
-                        </div>
+
                         <div class="filter-group">
                             <label>Status</label>
                             <select class="form-control">
                                 <option>Any</option>
                                 <option>Delivered</option>
-                                <option>Shipped</option>
+                                <option>Completed</option>
                                 <option>Pending</option>
-                                <option>Cancelled</option>
                             </select>
                         </div>
                         <span class="filter-icon"><i class="fa fa-filter"></i></span>
                     </div>
                 </div>
             </div>
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover" id="myTable">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Customer</th>
-                        <th>Location</th>
+                        <th>Customer name</th>
                         <th>Order Date</th>
                         <th>Status</th>
+                        <th>Room</th>
                         <th>Net Amount</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="#"><img src="/examples/images/avatar/1.jpg" class="avatar" alt="Avatar"> Michael Holz</a></td>
-                        <td>London</td>
-                        <td>Jun 15, 2017</td>
-                        <td><span class="status text-success">&bull;</span> Delivered</td>
-                        <td>$254</td>
-                        <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><a href="#"><img src="/examples/images/avatar/2.jpg" class="avatar" alt="Avatar"> Paula Wilson</a></td>
-                        <td>Madrid</td>
-                        <td>Jun 21, 2017</td>
-                        <td><span class="status text-info">&bull;</span> Shipped</td>
-                        <td>$1,260</td>
-                        <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><a href="#"><img src="/examples/images/avatar/3.jpg" class="avatar" alt="Avatar"> Antonio Moreno</a></td>
-                        <td>Berlin</td>
-                        <td>Jul 04, 2017</td>
-                        <td><span class="status text-danger">&bull;</span> Cancelled</td>
-                        <td>$350</td>
-                        <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><a href="#"><img src="/examples/images/avatar/4.jpg" class="avatar" alt="Avatar"> Mary Saveley</a></td>
-                        <td>New York</td>
-                        <td>Jul 16, 2017</td>
-                        <td><span class="status text-warning">&bull;</span> Pending</td>
-                        <td>$1,572</td>
-                        <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><a href="#"><img src="/examples/images/avatar/5.jpg" class="avatar" alt="Avatar"> Martin Sommer</a></td>
-                        <td>Paris</td>
-                        <td>Aug 04, 2017</td>
-                        <td><span class="status text-success">&bull;</span> Delivered</td>
-                        <td>$580</td>
-                        <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a></td>
-                    </tr>
+                    <?php foreach ($orders as $order) { ?>
+                        <tr id="row-<?php echo $order['id']; ?>">
+                            <td><?php echo $order['id']; ?></td>
+                            <td style="cursor: pointer;" onclick="toggleDetails(<?php echo $order['id']; ?>)"> <?php echo $order['user_name']; ?> </td>
+                            <td> <?php echo $order['date']; ?> </td>
+                            <td><span class="status <?php if ($order['status'] == 'delivered') echo 'text-success';
+                                                    else if ($order['status'] == 'completed') echo 'text-success';
+                                                    else echo 'text-warning'; ?>">&bull;</span>
+                                <?php echo $order['status']; ?> </td>
+                            <td><?php echo $order['room']; ?></td>
+                            <td>$ <?php echo $order['total_price']; ?></td>
+                            <td><a href="#" onclick="
+                            changeSatatus(<?php echo $order['id']; ?> , '<?php echo $order['status']; ?>')"
+                                    class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a></td>
+                        </tr>
+                    <?php } ?>
+
                 </tbody>
             </table>
             <div class="clearfix">
@@ -219,7 +180,113 @@ require_once 'orders_functions.php';
     <script src="assets/js/orders_table.js"></script>
 </body>
 <script>
+    function changeSatatus(id, status) {
+        console.log(id, status);
+        var status = status;
+        const url = `orders_functions.php?id=${id}&status=${status}`;
 
+        fetch(url)
+            .then(response => response.text()) // Use text() instead of json() to check the raw response
+            .then(rawResponse => {
+                try {
+                    const data = JSON.parse(rawResponse); // Manually parse JSON
+                    if (data.status === 'success') {
+                        var newStatus = (data.new_status == 'delivered' || data.newStatus == 'completed' ? 'text-success' : 'text-warning');
+                        const row = document.getElementById(`row-${id}`);
+                        const statusCell = row.querySelector('.status');
+                        statusCell.classList.remove('text-warning');
+                        statusCell.classList.add(`text-${data.new_status}`);
+                        statusCell.textContent = data.new_status;
+                        statusCell.textContent = data.newStatus;
+                    } else {
+                        alert('Error changing status');
+                    }
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
+            })
+            .catch(error => console.error('Error changing status:', error));
+
+    }
+
+    function toggleDetails(orderId) {
+        const existingRow = document.getElementById(`details-${orderId}`);
+
+        if (existingRow) {
+            existingRow.remove(); // Remove row if it already exists
+        } else {
+            // Make an AJAX request to fetch order details
+            fetch(`get_order_products.php?order_id=${orderId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Create a new row
+                    const mainRow = document.getElementById(`row-${orderId}`);
+                    const newRow = document.createElement('tr');
+                    newRow.id = `details-${orderId}`;
+                    const newCell = document.createElement('td');
+                    newCell.colSpan = 7; // Merge all columns
+
+
+
+
+                    // Generate content with order products
+                    let content = `<div class="order-details d-flex justify-content-center  align-items-center  ">`;
+                    data.forEach(product => {
+                        content += `
+                            <div class="order-details-content position-relative d-flex flex-column justify-content-center align-items-center">
+                                <img src="assets/images/products/${product.image}" width="60" height="60" alt="Product Image">
+                                <span class="price">$${product.price}</span>
+                                <span id="name" class="text-muted fw-bold">${product.name}</span>
+                                <span id="quantity" class="text-muted fw-bold">${product.quantity}</span>
+                            </div>
+                        `;
+                    });
+                    content += `</div>`;
+
+                    newCell.innerHTML = content;
+                    newCell.style.backgroundColor = '#f9f9f9';
+                    newCell.style.padding = '10px';
+                    newRow.appendChild(newCell);
+
+                    // Insert the new row after the clicked row
+                    mainRow.parentNode.insertBefore(newRow, mainRow.nextSibling);
+                })
+                .catch(error => console.error('Error fetching order details:', error));
+        }
+    }
+
+    // function toggleDetails(orderId) {
+    // const existingRow = document.getElementById(`details-${orderId}`);
+
+    // if (existingRow) {
+    //     // If the row already exists, toggle its visibility
+    //     existingRow.remove();
+    // } else {
+    //     // Create a new row with merged columns
+    //     const mainRow = document.getElementById(`row-${orderId}`);
+    //     const newRow = document.createElement('tr');
+    //     newRow.id = `details-${orderId}`;
+    //     const newCell = document.createElement('td');
+    //     newCell.colSpan = 7; // Merge all columns
+    //     newCell.innerHTML = `   
+    //                         <div class="spinner-border text-primary text-center" role="status" id="spinner">
+    //                         </div>
+    //                        `;
+    //     newCell.style.backgroundColor = '#f9f9f9';
+    //     newCell.style.padding = '10px';
+    //     newRow.appendChild(newCell);
+
+
+
+    //     // Insert the new row after the clicked row
+    //     mainRow.parentNode.insertBefore(newRow, mainRow.nextSibling);
+
+
+
+
+
+    // }
+    // }
 </script>
 
 </html>
