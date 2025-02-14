@@ -41,24 +41,23 @@ function authenticateUser($email, $password, $con)
   $stmt->bind_param("s", $email);
   $stmt->execute();
   $result = $stmt->get_result();
-
   if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
-
     if (password_verify($password, $user['password'])) {
       // Set session variables
       $_SESSION['user_id'] = $user['id'];
       $_SESSION['name'] = $user['name'];
       $_SESSION['email'] = $user['email'];
       $_SESSION['role'] = $user['role'];
-
+      $_SESSION['profile_image'] = $user['profile_image'];
+      $_SESSION['login'] = true;
       header("location: myorders_admin.php");
       exit;
     } else {
-      $_SESSION['error'] = "Incorrect password";
+      $_SESSION['password_err'] = "Incorrect password";
     }
   } else {
-    $_SESSION['error'] = "Email not found";
+    $_SESSION['email_err'] = "Email not found";
   }
 
   $stmt->close();
