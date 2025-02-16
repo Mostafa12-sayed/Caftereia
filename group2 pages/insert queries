@@ -21,4 +21,4 @@ $query="select users.name as user_name,
 
 
 // inserting new product pizza
-        INSERT INTO `cafeteria_db`.`products` (`id`, `name`, `price`, `category_id`, `image`, `status`) VALUES ('4', 'pizza', '20', '3', 'pizza.jpg', 'available');
+        INSERT INTO `cafeteria_db`.`products` (`id`, `name`, `price`, `category_id`, `image`, `status`) VALUES ('4', 'pizza', '20', '3', 'pizza.jpeg', 'available');

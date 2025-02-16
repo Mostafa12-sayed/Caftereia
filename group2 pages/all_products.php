@@ -18,6 +18,7 @@ $res = all_products();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="./style/style.css" rel="stylesheet">
+    
 </head>
 
 <body class="bg-light">
@@ -84,26 +85,13 @@ $res = all_products();
                 <?php $i++; ?>
                 <tr class="clickable_rows">
                     <td scope="row"><?= $i ?></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['name'] ?></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['price'] ?> LE</td>
-                    <td><img src="<?="../uploads/".$row['image'] ?>" style="width:auto; height:150px; border-radius:5px;" class="img-fluid"></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['status'] ?></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['category'] ?></td>
-                    <td ><a href="edit" class="btn btn-primary">Edit</a></td>
-                    <td ><a href="delete.php?id=<?= $row['id'] ?>" class="btn btn-danger">Delete</a></td>
-                </tr>
-                <tr class="collapse" id="show_details<?= $i ?>">
-                    <td colspan="9">
-                        <div class="details">
-                            <h5>Order Details</h5>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="<?= $row['image'] ?>" class="img-fluid">
-                                    <h6 class="mt-3"><?= $row['products_ordered'] ?></h6>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
+                    <td > <?= $row['name'] ?></td>
+                    <td > <?= $row['price'] ?> LE</td>
+                    <td><img src="<?=$row['image'] ?>" style="width:auto; height:150px; border-radius:5px;" class="img-fluid"></td>
+                    <td > <?= $row['status'] ?></td>
+                    <td > <?= $row['category'] ?></td>
+                    <td ><a href="./referral_pages/edit_product.php?id=<?= $row['id'] ?>" class="btn btn-primary">Edit</a></td>
+                    <td ><a href="./referral_pages/delete.php?id=<?= $row['id'] ?>" class="btn btn-danger">Delete</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

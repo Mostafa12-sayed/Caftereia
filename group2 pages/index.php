@@ -29,13 +29,13 @@ if (isset($start_date) && isset($end_date)) {
     <link href="./style/style.css" rel="stylesheet">
 </head>
 
-<body class="bg-light">
+<body class="">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg border-bottom">
+        <div class="container-fluid ">
             <!-- Logo -->
             <a class="navbar-brand" href="#">
-                <img src="assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle">
+                <img src="../assets/images/logo.jpg" class="Cafeteria-Logo rounded-circle" alt="Cafeteria Logo">
             </a>
 
             <!-- Navbar Toggle Button for Mobile -->
@@ -56,7 +56,7 @@ if (isset($start_date) && isset($end_date)) {
                 <div class="d-flex align-items-center gap-3">
                     <div class="admin-profile d-flex align-items-center" id="profileToggle">
                         <img src="assets/images/profile_img/<?= isset($_SESSION['profile_img']) ? $_SESSION['profile_img'] : 'default.jpg' ?>" class="rounded-circle" height="70">
-                        <span class="ms-2 fw-bold"><?= $_SESSION['name'] ?></span>
+                       <span class="ms-2 fw-bold">Moaz</span> <!--<?= $_SESSION['name'] ?> here you should replace the Moaz name with this text-->
                         <div class="dropdown-menu" id="dropdownMenu">
                             <a href="#">Profile</a>
                             <a href="logout.php">Logout</a>
@@ -72,9 +72,9 @@ if (isset($start_date) && isset($end_date)) {
 
     <div class="col-8 container">
         <form action="index.php" method="get">
-            <h2 class="mb-5">Previos orders</h2>
-            <div class="col-12 d-flex p-2 justify-content-around">
-                <h5>Pick a date from </h5>
+            <h2 class="mb-5 mt-5">Previos orders</h2>
+            <div class="col-12 d-flex p-2 justify-content-around mt-3">
+                <h5 >Pick a date from </h5>
                 <div class=" date col-3" data-provide="datepicker">
                     <input type="date" class="form-control" name="datepicker1" id="datepicker1" onchange="start_time();">
                     <div class="input-group-addon">
@@ -139,7 +139,65 @@ if (isset($start_date) && isset($end_date)) {
     </table>
 
 
+<pre>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
 
 
 

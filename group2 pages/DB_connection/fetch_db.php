@@ -74,12 +74,13 @@ function all_products(){
     $db_object=connect_to_database();
     try{
         $query="SELECT 
-            products.id,
+            products.id as id,
             products.name,
             products.price,
             products.status,
             products.image,
-            categories.name as category
+            categories.name as category,
+            categories.id as category_id
         FROM products
         JOIN categories ON products.category_id = categories.id;";
         $stmt=$db_object->prepare($query);
@@ -101,20 +102,81 @@ function delete_product($id){
     $stmt=$db_object->prepare($query);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
-    if(!($stmt->rowCount() > 0)){
-        echo "Product not found!";
-    }}catch(PDOException $e){
+    }catch(PDOException $e){
         echo "Error: ". $e->getMessage();
     }
 }
 
 
+function all_categories(){
+    try{
+    $db_object=connect_to_database();
+    $query="select * from categories;";
+    $stmt=$db_object->prepare($query);
+    $stmt->execute();
+    $res=$stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $res;
+    }catch(PDOException $e){
+        echo "Error: ". $e->getMessage();
+    }
+
+}
+
+function add_product($name,$price,$category,$image){
+    try{
+        $db_object=connect_to_database();
+        $query="INSERT INTO products (name, price, category_id, image) VALUES (:name, :price, :category_id, :image);";
+        $stmt=$db_object->prepare($query);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':price', $price);
+        $stmt->bindParam(':category_id', $category);
+        $stmt->bindParam(':image', $image);
+        $stmt->execute();
+    }catch(PDOException $e){
+        echo "Error: ". $e->getMessage();
+    }
+}
 
 
+function edit_product($id, $name, $price, $category, $image){
+    try{
+        $db_object=connect_to_database();
+        $query="UPDATE products SET name = :name, price = :price, category_id = :category_id, image = :image WHERE id = :id;";
+        $stmt=$db_object->prepare($query);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':price', $price);
+        $stmt->bindParam(':category_id', $category);
+        $stmt->bindParam(':image', $image);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }catch(PDOException $e){
+        echo "Error: ". $e->getMessage();
+    }
+}
 
 
-
-
+function fetch_single_product($id){
+    try{
+    $db_object=connect_to_database();
+    $squery="select 
+            products.name,
+            products.price,
+            products.status,
+            products.image,
+            categories.name as category,
+            categories.id as category_id
+        FROM products
+        JOIN categories ON products.category_id = categories.id
+        where products.id=:id;";
+        $stmt=$db_object->prepare($squery);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $res=$stmt->fetch(PDO::FETCH_ASSOC);
+        return $res;
+    }catch (PDOException $e){
+        echo "Error: ". $e->getMessage();
+    }
+}
 
 
 

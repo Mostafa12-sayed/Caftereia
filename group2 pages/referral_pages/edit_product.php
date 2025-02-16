@@ -1,10 +1,16 @@
 <?php
-require_once('./DB_connection/db_connection.php');
-require_once('./DB_connection/fetch_db.php');
-$categories = all_categories();
+require_once('../DB_connection/db_connection.php');
+require_once('../DB_connection/fetch_db.php');
+$res=[];
+if (isset($_GET['id'])){
+    $product_id = $_GET['id'];
+    $res=fetch_single_product($product_id);
+    $categories=all_categories();
+}else{}
+
+
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,40 +68,33 @@ $categories = all_categories();
 
 
     <div class="col-md-6 container p-4">
-        <form action="submit/submit_add_product.php" method="post" enctype="multipart/form-data">
+        <form action="../submit/submit_edit.php" method="post" enctype="multipart/form-data">
             <div class="mb-2">
                 <label for="product_name" class="form-label">Product Name</label>
-                <input type="text" class="form-control" name="product_name">
+                <input type="text" class="form-control" name="product_name" value="<?=$res['name']?>">
             </div>
             <div class="mb-3 col-md-2">
                 <label for="product_price" class="form-label">Price</label>
-                <input type="number" class="form-control" name="product_price">
+                <input type="number" class="form-control" name="product_price" value="<?=$res['price']?>">
             </div>
             <div class="mb-3 col-md-4">
                 <select class="form-select" name="category" aria-label="Select Category">
-                    <option selected>Select Category</option>
+                    <option >Select Category</option>
                     <?php foreach ($categories as $category) { ?>
-                        <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                        <option value="<?= $category['id'] ?>" <?php if($category['id']==$res['category_id']){echo "selected";}  ?>><?= $category['name'] ?></option>
                     <?php } ?>
                 </select>
             </div>
             <div class="input-group mb-3">
                 <label class="input-group-text" for="image">Upload</label>
                 <input type="file" class="form-control" name="image">
+                <input type="hidden" name="pimage" id="pimage" value="<?php echo ($res['image']); ?>">
+                <input type="hidden" name="id" id="id" value="<?php echo ($product_id); ?>">
             </div>
             <button type="submit" class="btn btn-success">Submit</button>
             <button type="reset" class="btn btn-primary">Reset</button>
         </form>
     </div>
-
-
-
-
-
-
-
-
-
 
 
     <script src="./style/styling.js"></script>
