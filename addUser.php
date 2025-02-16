@@ -41,7 +41,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="assets/images/logo.png" alt="Cafeteria Logo" height="40">
+            <img src="assets/images/logo.jpg" class="Cafeteria-Logo rounded-circle" alt="Logo" height="70">
             </a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
@@ -57,7 +57,7 @@
                         <i class="fas fa-search search-icon"></i>
                     </div>
                     <div class="admin-profile">
-                        <img src="assets/images/admin-avatar.png" class="rounded-circle" width="40" height="40">
+                        <img src="assets/images/profile_img/default.jpg" class="rounded-circle" width="40" height="40">
                         <span class="ms-2 fw-bold">admin</span>
                     </div>
                 </div>
