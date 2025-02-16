@@ -73,8 +73,15 @@ function user_previous_orders_filtered($id,$start_date,$end_date)
 function all_products(){
     $db_object=connect_to_database();
     try{
-        $query="select name,image 
-        from products where id=2;";
+        $query="SELECT 
+            products.id,
+            products.name,
+            products.price,
+            products.status,
+            products.image,
+            categories.name as category
+        FROM products
+        JOIN categories ON products.category_id = categories.id;";
         $stmt=$db_object->prepare($query);
         $stmt->execute();
         $res=$stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -87,6 +94,19 @@ function all_products(){
 
 
 
+function delete_product($id){
+    try{
+    $db_object=connect_to_database();
+    $query="DELETE FROM products WHERE id = (:id);";
+    $stmt=$db_object->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    if(!($stmt->rowCount() > 0)){
+        echo "Product not found!";
+    }}catch(PDOException $e){
+        echo "Error: ". $e->getMessage();
+    }
+}
 
 
 

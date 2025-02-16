@@ -1,28 +1,19 @@
-<?php
-
-use Symfony\Component\VarDumper\VarDumper;
-
+<?php   
 require_once('./DB_connection/db_connection.php');
 require_once('./DB_connection/fetch_db.php');
 
-$id = 3;
 
-(isset($_GET['datepicker1'])&& !empty($_GET['datepicker1'])) ? $start_date = $_GET['datepicker1'] : $start_date='2000-01-01' ;
-(isset($_GET['datepicker2'])&& !empty($_GET['datepicker2'])) ? $end_date = $_GET['datepicker2'] : $end_date=date('Y-m-d');
-
-
-if (isset($start_date) && isset($end_date)) {
-    $res = user_previous_orders_filtered($id, $start_date, $end_date);
-}
+$res = all_products();
 
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User - my orders</title>
+    <title>Admin - ALl Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../assets/css/style.css" rel="stylesheet">
@@ -70,41 +61,22 @@ if (isset($start_date) && isset($end_date)) {
     </nav>
 
 
-    <div class="col-8 container">
-        <form action="index.php" method="get">
-            <h2 class="mb-5">Previos orders</h2>
-            <div class="col-12 d-flex p-2 justify-content-around">
-                <h5>Pick a date from </h5>
-                <div class=" date col-3" data-provide="datepicker">
-                    <input type="date" class="form-control" name="datepicker1" id="datepicker1" onchange="start_time();">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                    </div>
-                </div>
-                <h5>To :</h5>
-                <div class=" date col-3" data-provide="datepicker">
-                    <input type="date" class="form-control" name="datepicker2" id="datepicker2" onchange="end_time();">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                    </div>
-                </div>
-                <div>
-                    <button id="getDateButton" type="submit" class="btn btn-primary" onclick="apply_date_filter()">Apply</button>
-                </div><br><br>
-            </div>
-            <form>
+    <div class="col-9 container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-3">All products</h2>         
+            <a href="admin_add_product.php?>"  class="btn btn-primary ">Add Product</a>
+        </div>
     <table class="table table-striped" style="background-color: #7e6d63; color:aliceblue; border-radius: 5px;">
         <thead>
             <tr>
                 <th scope="col"></th>
                 <th scope="col">Name</th>
-                <th scope="col">Date</th>
-                <th scope="col">Product</th>
-                <th scope="col">Room</th>
+                <th scope="col">Price</th>
+                <th scope="col">image</th>
                 <th scope="col">Status</th>
-                <th scope="col">Total order</th>
-                <th scope="col">Notes</th>
-                <th scope="col">Action</th>
+                <th scope="col">Category</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -112,14 +84,13 @@ if (isset($start_date) && isset($end_date)) {
                 <?php $i++; ?>
                 <tr class="clickable_rows">
                     <td scope="row"><?= $i ?></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['user_name'] ?></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['date'] ?></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['products_ordered'] ?></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['room'] ?></td>
+                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['name'] ?></td>
+                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['price'] ?> LE</td>
+                    <td><img src="<?="../uploads/".$row['image'] ?>" style="width:auto; height:150px; border-radius:5px;" class="img-fluid"></td>
                     <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['status'] ?></td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['total_price'] ?> LE</td>
-                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['notes'] ?></td>
-                    <td ><button type="button" name="cancel_btn" class="btn btn-danger" <?php if (!($row['status']=='pending')){echo "disabled";} ?>>Cancel</button></td>
+                    <td data-bs-toggle="collapse" href="#show_details<?= $i ?>"> <?= $row['category'] ?></td>
+                    <td ><a href="edit" class="btn btn-primary">Edit</a></td>
+                    <td ><a href="delete.php?id=<?= $row['id'] ?>" class="btn btn-danger">Delete</a></td>
                 </tr>
                 <tr class="collapse" id="show_details<?= $i ?>">
                     <td colspan="9">

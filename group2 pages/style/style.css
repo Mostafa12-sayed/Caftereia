@@ -1,14 +1,3 @@
-.collapse {
-    max-height: 0; /* Start collapsed */
-    overflow: hidden;
-    transition: max-height 0.3s ease-out; /* Smooth collapse and expand */
-}
-
-/* State for when the collapse is open */
-.collapse.show {
-    max-height: 500px; /* A value large enough to allow content to expand */
-}
-
 /* Optional: Highlight the row on hover */
 tr:hover {
     cursor: pointer;
