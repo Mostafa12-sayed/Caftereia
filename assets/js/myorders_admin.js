@@ -1,3 +1,34 @@
+<<<<<<< HEAD
+document.addEventListener("DOMContentLoaded", () => {
+  let selectedProducts =
+    JSON.parse(localStorage.getItem("selectedProducts")) || [];
+
+  // User selection
+  document.getElementById("userSelect").addEventListener("change", (e) => {
+    document.getElementById("selected_user").value = e.target.value;
+  });
+
+  // Product selection
+  document.querySelectorAll(".product-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const productId = parseInt(card.dataset.id);
+      const productName = card.querySelector("h6").textContent;
+      const productPrice = parseFloat(card.querySelector(".price").textContent);
+      const productImage = card.querySelector("img").src.split("/").pop();
+
+      if (!selectedProducts.some((p) => p.id === productId)) {
+        selectedProducts.push({
+          id: productId,
+          name: productName,
+          price: productPrice,
+          image: productImage,
+          quantity: 1,
+        });
+        updateSelectedProducts();
+        calculateTotal();
+      }
+    });
+=======
 document.addEventListener('DOMContentLoaded', () => {
     let selectedProducts = JSON.parse(localStorage.getItem('selectedProducts')) || [];
     
@@ -31,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateSelectedProducts();
                 calculateTotal();
             }
+>>>>>>> aa8ebaea989d433e5a9f5ee26dbccf1af66e07ed
   });
 
   // Quantity controls

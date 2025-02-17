@@ -18,3 +18,7 @@ $query="select users.name as user_name,
         join users on users.id=orders.user_id
         where users.id=2;";
         
+
+
+// inserting new product pizza
+        INSERT INTO `cafeteria_db`.`products` (`id`, `name`, `price`, `category_id`, `image`, `status`) VALUES ('4', 'pizza', '20', '3', 'pizza.jpeg', 'available');
