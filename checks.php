@@ -9,7 +9,8 @@ $userId = $_GET['user_id'] ?? '';
 
 $usersQuery = $pdo->query("SELECT id, name FROM users");
 
-$sql = "SELECT o.id, o.date, o.total_price, u.name FROM orders o
+$sql = "SELECT o.id, o.date AS order_date, o.total_price AS amount, u.name 
+        FROM orders o
         JOIN users u ON o.user_id = u.id WHERE 1=1";
 
 if ($fromDate && $toDate) {
