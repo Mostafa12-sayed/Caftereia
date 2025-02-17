@@ -2,7 +2,7 @@
 <?php
 
 const DB_USER='root';
-const DB_PASSWORD='roet';
+const DB_PASSWORD='root';
 const DB_PORT=3306;
 
 function connect_to_db_pdo(){
