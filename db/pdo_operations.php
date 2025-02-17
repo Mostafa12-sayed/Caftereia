@@ -3,17 +3,17 @@
 require 'connection_pdo.php';
 
 
-function insert_data($name, $room_no, $email, $password, $image = "") {
+function insert_data($name, $room, $email, $password, $profile_image = "") {
     $pdo = connect_to_db_pdo();
     try {
-        $inst_query = "INSERT INTO users (name, room_no, email, password, image) VALUES (:name, :room_no, :email, :password, :image)";
+        $inst_query = "INSERT INTO users (name, room, email, password, profile_image) VALUES (:name, :room_no, :email, :password, :image)";
         $stmt = $pdo->prepare($inst_query);
         
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':room_no', $room_no);
+        $stmt->bindParam(':room_no', $room);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password); 
-        $stmt->bindParam(':image', $image);
+        $stmt->bindParam(':image', $profile_image);
         
         $stmt->execute();
         
@@ -32,7 +32,7 @@ function insert_data($name, $room_no, $email, $password, $image = "") {
 function select_data(){
     $pdo = connect_to_db_pdo();
     try{
-        $select_query = "SELECT id, name, room_no, email, image FROM users";
+        $select_query = "SELECT id, name, room, email, profile_image FROM users";
        $stmt = $pdo->prepare($select_query);
        $stmt->execute();
        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -67,13 +67,13 @@ function select_User($id){
 
 }
 
-function update_User($id, $name, $room_no, $email) {
+function update_User($id, $name, $room, $email) {
     try {
         $pdo = connect_to_db_pdo();
-        $updateQuery = "UPDATE users SET name = :name, room_no = :room_no, email = :email WHERE id = :id";
+        $updateQuery = "UPDATE users SET name = :name, room = :room_no, email = :email WHERE id = :id";
         $stmt = $pdo->prepare($updateQuery);
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':room_no', $room_no);
+        $stmt->bindParam(':room_no', $room);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

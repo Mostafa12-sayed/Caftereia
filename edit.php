@@ -8,10 +8,10 @@ if (isset($_GET['id'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $room_no = $_POST['room_no'];
+    $room = $_POST['room'];
     $email = $_POST['email'];
 
-    $updated = update_User($id, $name, $room_no, $email);
+    $updated = update_User($id, $name, $email, $room);
 
     if ($updated) {
         header("Location: allUsers.php"); 
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" name="room_no" class="form-control" value="<?php echo htmlspecialchars($User['room_no']); ?>" required>
+                    <input type="text" name="room" class="form-control" value="<?php echo htmlspecialchars($User['room']); ?>" required>
                     <label>Room No.</label>
                 </div>
 

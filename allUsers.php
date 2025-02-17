@@ -59,7 +59,7 @@ function drawTable($users){
         echo "<tr>";
         foreach ($user as $key=>$value) {
 
-            if ($key != "image") {
+            if ($key != "profile_image") {
                 echo "<td>{$value}</td>";
             }else{
                 echo "<td><img src='{$value}' width='40' height='40'></td>";
@@ -67,7 +67,7 @@ function drawTable($users){
         }
         // echo "<td><a class='btn btn-outline-warning' href='show.php?id={$user['id']}'>Show</a></td>";
         echo "<td><a class='btn btn-outline-primary' href='edit.php?id={$user['id']}'>Update</a></td>";
-        echo "<td><a class='btn btn-outline-danger' href='delete.php?id={$user['id']}&image={$user['image']}'>Delete</a></td>";
+        echo "<td><a class='btn btn-outline-danger' href='delete.php?id={$user['id']}&image={$user['profile_image']}'>Delete</a></td>";
         echo "</tr>";
 
     }
