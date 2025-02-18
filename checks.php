@@ -1,5 +1,5 @@
 <?php
-require 'db/connection_pdo.php';
+require 'operations_functions.php';
 
 $pdo = connect_to_db_pdo();
 
@@ -22,6 +22,7 @@ if ($userId) {
 
 $sql .= " ORDER BY o.date DESC";
 $orders = $pdo->query($sql);
+
 ?>
 
 <html lang="en">
@@ -76,10 +77,9 @@ $orders = $pdo->query($sql);
                 <?php endwhile; ?>
             </select>
         </label>
-
         <button type="submit" class="btn px-4 m-3 btn-dark">Filter</button>
     </form>
-                </div>
+    </div>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -101,14 +101,20 @@ $orders = $pdo->query($sql);
                 </tr>
                 <tr id="order-<?= $row['id'] ?>" class="order-details" style="display: none;">
                     <td colspan="4">
-                        <div id="order-items-<?= $row['id'] ?>"></div>
+                        <div id="order-items-<?= $row['id'] ?>">
+                        </div>
                     </td>
                 </tr>
             <?php endwhile; ?>
         </tbody>
     </table>
+    <div class="container text-center m-5">
+    <h3>Selected Products</h3>
+    <div id="selected-products" class="row justify-content-center m-5"></div>
 </div>
-<script  src="assets/js/checks.js"></script>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="assets/js/checks.js"></script>
 </body>
 </html>
 

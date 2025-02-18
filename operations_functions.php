@@ -1,20 +1,17 @@
 <?php
+require 'db/connection_pdo.php';
 
-require 'connection_pdo.php';
-
-
+//////////////////// insert
 function insert_data($name, $room, $email, $password, $profile_image = "") {
     $pdo = connect_to_db_pdo();
     try {
         $inst_query = "INSERT INTO users (name, room, email, password, profile_image) VALUES (:name, :room_no, :email, :password, :image)";
         $stmt = $pdo->prepare($inst_query);
-        
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':room_no', $room);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password); 
         $stmt->bindParam(':image', $profile_image);
-        
         $stmt->execute();
         
         if ($pdo->lastInsertId()) {
@@ -27,8 +24,7 @@ function insert_data($name, $room, $email, $password, $profile_image = "") {
     }
 }
 
-
-
+//////////////////// select data
 function select_data(){
     $pdo = connect_to_db_pdo();
     try{
@@ -39,18 +35,13 @@ function select_data(){
         $pdo= null;
        return $result;
 
-
     }catch (Exception $e){
         echo "Error($e->getMessage())";
         return false;
     }
 }
 
-
-
-
-
-
+//////////////////// select User
 function select_User($id){
     try{
         $pdo = connect_to_db_pdo();
@@ -67,6 +58,7 @@ function select_User($id){
 
 }
 
+//////////////////// update User
 function update_User($id, $name, $room, $email) {
     try {
         $pdo = connect_to_db_pdo();
@@ -86,7 +78,8 @@ function update_User($id, $name, $room, $email) {
     }
 }
 
-function delete_data($id){
+//////////////////// delete user
+function delete_user($id){
     try{
         $pdo = connect_to_db_pdo();
         $delete_query = "delete from users where id = :id";
@@ -104,11 +97,3 @@ function delete_data($id){
     }
 
 }
-
-
-
-
-
-
-
-

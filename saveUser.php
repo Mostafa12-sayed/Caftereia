@@ -1,6 +1,6 @@
 <?php
 
-require "db/pdo_operations.php";
+require "operations_functions.php";
 
 $name = $_POST['name'];
 $room_no = $_POST['room_no'];

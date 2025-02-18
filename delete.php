@@ -1,11 +1,9 @@
 <?php
 
-require "db/pdo_operations.php";
-
-
+require "operations_functions.php";
 if(isset($_GET["id"])){
     $id = $_GET["id"];
-    delete_data($id);
+    delete_user($id);
     if(isset($_GET['image'])){
         try{
             unlink($_GET['image']);

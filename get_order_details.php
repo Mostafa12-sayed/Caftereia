@@ -1,28 +1,34 @@
 <?php
-require 'db/connection_pdo.php';
+require 'operations_functions.php';
+
 $pdo = connect_to_db_pdo();
 
-$orderId = $_GET['order_id'] ?? '';
-
-if (!$orderId) {
-    echo "Invalid Order ID";
+if (!isset($_GET['order_id'])) {
+    echo "Invalid request.";
     exit;
 }
 
-$query = $pdo->prepare(
-"SELECT p.name, oi.quantity, oi.price FROM order_items oi 
-JOIN products p ON oi.product_id = p.id 
-WHERE oi.order_id = ?"
-);
-$query->execute([$orderId]);
-$orderItems = $query->fetchAll(PDO::FETCH_ASSOC);
+$orderId = $_GET['order_id'];
 
-if (!$orderItems) {
-    echo "No items found for this order.";
-} else {
+$sql = "SELECT oi.quantity, p.name, p.price, p.image 
+        FROM Order_Items oi
+        JOIN Products p ON oi.product_id = p.id
+        WHERE oi.order_id = :order_id";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['order_id' => $orderId]);
+$orderItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if ($orderItems) {
     echo "<ul class='list-group'>";
     foreach ($orderItems as $item) {
-     echo "<li class='list-group-item'>{$item['name']} - {$item['quantity']} x {$item['price']} EGP</li>";
+        echo "<li class='list-group-item d-flex justify-content-between align-items-center'>";
+        echo "<img src='assets/images/products/{$item['image']}' alt='{$item['name']}' width='50' height='50' class='rounded-circle'>";
+        echo "{$item['name']} - {$item['quantity']} x {$item['price']} EGP";
+        echo "</li>";
     }
     echo "</ul>";
+} else {
+    echo "<p class='text-muted'>No order items found.</p>";
 }
+?>

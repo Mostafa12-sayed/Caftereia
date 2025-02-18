@@ -47,7 +47,7 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="users.php">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="allUsers.php">Users</a></li>
                     <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
                     <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
                 </ul>
@@ -102,8 +102,6 @@
           class="form-control">
         </div>
           <p class="text-danger"><?php echo $room_no ?? "" ?> </p>
-
-       
         <div class="mb-3 input-group ">
             <label >profile Image</label>
             <input type="file"name="image"class="form-control" >
@@ -113,9 +111,6 @@
         <button type="submit" class="btn px-4 btn-dark">Submit</button>
     </form>
 </div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
 </body>
 </html>

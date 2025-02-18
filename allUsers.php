@@ -34,26 +34,23 @@
             </div>
         </div>
     </nav>
-
 <div class="container my-1 p-1">
 <b class="mb-4 formHeader">All Users  
 </b>
 <a href="addUser.php" class="btn p-3 m-3 btn-dark btnAdd"><b> Add User</b> </a>
 
-
+<!--///////////////////// php-->
 <?php
-
-require "db/pdo_operations.php";
+require "operations_functions.php";
 function drawTable($users){
-    echo "<table class='table table-striped table-hover'>";
+    echo "<table class='table table-striped table-hover table-bordered text-center'>";
     echo "<tr> 
     <th> ID</th> 
     <th> Name</th>  
        <th>room No.</th>
        <th>email</th>
         <th>Image</th> 
-        <th>Update</th>
-         <th>Delete</th>
+        <th colspan='2' > Action</th>
           </tr>";
     foreach($users as $user) {  
         echo "<tr>";
@@ -65,23 +62,21 @@ function drawTable($users){
                 echo "<td><img src='{$value}' width='40' height='40'></td>";
             }
         }
-        // echo "<td><a class='btn btn-outline-warning' href='show.php?id={$user['id']}'>Show</a></td>";
         echo "<td><a class='btn btn-outline-primary' href='edit.php?id={$user['id']}'>Update</a></td>";
         echo "<td><a class='btn btn-outline-danger' href='delete.php?id={$user['id']}&image={$user['profile_image']}'>Delete</a></td>";
         echo "</tr>";
-
     }
 
     echo "</table>";
-
-
 }
 
 $user=  select_data();
 drawTable($user);
 ?>
-
-
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
 
 
 
