@@ -1,6 +1,6 @@
 <?php
 
-require "operations_functions.php";
+require "../UserModel.php";
 if(isset($_GET["id"])){
     $id = $_GET["id"];
     delete_user($id);

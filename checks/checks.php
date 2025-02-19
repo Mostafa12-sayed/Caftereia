@@ -1,7 +1,7 @@
 <?php
-require 'operations_functions.php';
+require "../UserModel.php";
 
-$pdo = connect_to_db_pdo();
+global $pdo;
 
 $fromDate = $_GET['from_date'] ?? '';
 $toDate = $_GET['to_date'] ?? '';
@@ -36,14 +36,14 @@ $orders = $pdo->query($sql);
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-            <img src="assets/images/logo.jpg" class="Cafeteria-Logo rounded-circle" alt="Logo" height="70">
+            <img src="../assets/images/logo.jpg" class="Cafeteria-Logo rounded-circle" alt="Logo" height="70">
 
             </a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="allUsers.php">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../products.php">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../listUsers/allUsers.php">Users</a></li>
                     <li class="nav-item"><a class="nav-link active fw-bold" href="manual_order.php">Manual Order</a></li>
                     <li class="nav-item"><a class="nav-link" href="checks.php">Checks</a></li>
                 </ul>
@@ -53,7 +53,7 @@ $orders = $pdo->query($sql);
                         <i class="fas fa-search search-icon"></i>
                     </div>
                     <div class="admin-profile">
-                        <img src="assets/images/profile_img/default.jpg" class="rounded-circle" width="40" height="40">
+                        <img src="../assets/images/profile_img/default.jpg" class="rounded-circle" width="40" height="40">
                         <span class="ms-2 fw-bold">admin</span>
                     </div>
                 </div>
@@ -80,7 +80,7 @@ $orders = $pdo->query($sql);
         <button type="submit" class="btn px-4 m-3 btn-dark">Filter</button>
     </form>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-striped table-hover table-bordered text-center">
         <thead>
             <tr>
                 <th>Name</th>
@@ -114,7 +114,7 @@ $orders = $pdo->query($sql);
 </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="assets/js/checks.js"></script>
+<script src="../assets/js/checks.js"></script>
 </body>
 </html>
 

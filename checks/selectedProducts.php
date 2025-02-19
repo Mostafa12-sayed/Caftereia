@@ -1,7 +1,7 @@
 <?php
-require 'operations_functions.php';
+require "../UserModel.php";
 
-$pdo = connect_to_db_pdo();
+global $pdo;
 
 if (!isset($_GET['order_id'])) {
     echo "Invalid request.";
@@ -25,7 +25,7 @@ if ($selectedProducts) {
         echo "<div class='col-md-4 position-relative'>";
         echo "<span class='position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger'>";
         echo "{$product['quantity']}</span>";
-        echo "<img src='assets/images/products/{$product['image']}' class='img-fluid rounded' style='width: 13rem; height: 13rem; object-fit: cover;' alt='{$product['name']}'>";
+        echo "<img src='../assets/images/products/{$product['image']}' class='img-fluid rounded' style='width: 13rem; height: 13rem; object-fit: cover;' alt='{$product['name']}'>";
         echo "<div class='card-footer'>";
         echo "<small class='text-body-secondary'>{$product['name']}</small>";
         echo "</div>";

@@ -9,14 +9,14 @@ $(document).ready(function() {
             detailsRow.hide();
         } else {
             $.ajax({
-                url: "get_order_details.php",
+                url: "orderDetails.php",
                 type: "GET",
                 data: { order_id: orderId },
                 success: function(response) {
                     detailsDiv.html(response);
                     detailsRow.show();
                     $.ajax({
-                        url: "get_selected_products.php",
+                        url: "selectedProducts.php",
                         type: "GET",
                         data: { order_id: orderId },
                         success: function(productResponse) {

@@ -1,6 +1,6 @@
 <?php
 
-require "operations_functions.php";
+require "../UserModel.php";
 
 $name = $_POST['name'];
 $room_no = $_POST['room_no'];
@@ -10,11 +10,9 @@ $image= $_FILES['image']['name'];
 $image_size = $_FILES['image']['size'];
 
 
-
-
 if($name and $room_no and $email and $password and $image  and $image_size  ){
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $image_name = "uploads/".time()."_".$image;
+    $image_name = "../assets/images/uploads/".time()."_".$image;
     $uploaded = move_uploaded_file($_FILES['image']['tmp_name'], $image_name);
     if(! $uploaded){
         $image_name=null;
@@ -24,7 +22,7 @@ if($name and $room_no and $email and $password and $image  and $image_size  ){
 
 
 
-    header("Location: allUsers.php");
+    header("Location: ../listUsers/allUsers.php");
 }
 
 else{

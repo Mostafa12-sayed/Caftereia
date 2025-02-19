@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $room = $_POST['room'];
     $email = $_POST['email'];
 
-    $updated = update_User($id, $name, $room, $email);
+    $updated = update_User($id, $name, $email, $room);
 
     if ($updated) {
         header("Location: allUsers.php"); 

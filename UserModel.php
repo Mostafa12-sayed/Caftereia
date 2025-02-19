@@ -1,9 +1,9 @@
 <?php
-require 'db/connection_pdo.php';
+require 'connection_db.php';
 
 //////////////////// insert
 function insert_data($name, $room, $email, $password, $profile_image = "") {
-    $pdo = connect_to_db_pdo();
+    global $pdo;
     try {
         $inst_query = "INSERT INTO users (name, room, email, password, profile_image) VALUES (:name, :room_no, :email, :password, :image)";
         $stmt = $pdo->prepare($inst_query);
@@ -26,7 +26,7 @@ function insert_data($name, $room, $email, $password, $profile_image = "") {
 
 //////////////////// select data
 function select_data(){
-    $pdo = connect_to_db_pdo();
+    global $pdo;
     try{
         $select_query = "SELECT id, name, room, email, profile_image FROM users";
        $stmt = $pdo->prepare($select_query);
@@ -42,9 +42,8 @@ function select_data(){
 }
 
 //////////////////// select User
-function select_User($id){
+function select_User($id,$pdo){
     try{
-        $pdo = connect_to_db_pdo();
         $select_query = "select * from users where id = :id";
         $stmt = $pdo->prepare($select_query);
         $stmt->bindParam(':id', $id);
@@ -59,9 +58,8 @@ function select_User($id){
 }
 
 //////////////////// update User
-function update_User($id, $name, $room, $email) {
+function update_User($id, $name, $room, $email, $pdo) {
     try {
-        $pdo = connect_to_db_pdo();
         $updateQuery = "UPDATE users SET name = :name, room = :room_no, email = :email WHERE id = :id";
         $stmt = $pdo->prepare($updateQuery);
         $stmt->bindParam(':name', $name);
@@ -78,10 +76,12 @@ function update_User($id, $name, $room, $email) {
     }
 }
 
+
+
 //////////////////// delete user
 function delete_user($id){
+    global $pdo;
     try{
-        $pdo = connect_to_db_pdo();
         $delete_query = "delete from users where id = :id";
         $stmt = $pdo->prepare($delete_query);
         $stmt->bindParam(':id', $id);

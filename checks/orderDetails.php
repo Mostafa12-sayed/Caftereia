@@ -1,7 +1,7 @@
 <?php
-require 'operations_functions.php';
+require "../UserModel.php";
 
-$pdo = connect_to_db_pdo();
+global $pdo;
 
 if (!isset($_GET['order_id'])) {
     echo "Invalid request.";
@@ -23,7 +23,7 @@ if ($orderItems) {
     echo "<ul class='list-group'>";
     foreach ($orderItems as $item) {
         echo "<li class='list-group-item d-flex justify-content-between align-items-center'>";
-        echo "<img src='assets/images/products/{$item['image']}' alt='{$item['name']}' width='50' height='50' class='rounded-circle'>";
+        echo "<img src='../assets/images/products/{$item['image']}' alt='{$item['name']}' width='50' height='50' class='rounded-circle'>";
         echo "{$item['name']} - {$item['quantity']} x {$item['price']} EGP";
         echo "</li>";
     }
