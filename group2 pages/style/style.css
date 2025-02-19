@@ -1,24 +1,15 @@
-/* Optional: Highlight the row on hover */
+
 tr:hover {
     cursor: pointer;
     background-color: #f1a23b;
 }
 
-
-/* Optional: Add padding to the expanded content */
 .details {
     color: black;
-    padding: 10px;
     background-color: #f1a23b;
     border-radius: 5px;
 }
-/* primary #6b4423
-secondary #d4a373
-accent #ffd700
-background #f5f5dc
-Dark Brown (#3E2723), Light Brown (#795548), Gold (#FFD700)
 
-*/
 .navbar{
     color: #f1a23b;
     background-color: #000000;
@@ -37,6 +28,7 @@ Dark Brown (#3E2723), Light Brown (#795548), Gold (#FFD700)
 body{
     background-image:url("../bg/bg5.png");
 }
+
 
 .Cafeteria-Logo {
     width: 85px; 

@@ -2,10 +2,13 @@
 require_once('./DB_connection/db_connection.php');
 require_once('./DB_connection/fetch_db.php');
 
-
-$res = all_products();
-
-
+if(isset($_GET['res'])) {
+    $res = $_GET['res'];
+    $res = json_decode(urldecode($res), true);
+    }else{
+        $res = all_products($limit=10, $offset=0);
+    }
+    $rows_count=count_all_products();
 ?>
 
 <!DOCTYPE html>
@@ -21,21 +24,20 @@ $res = all_products();
     
 </head>
 
-<body class="bg-light">
+<body class="" style="background-image:url('./bg/bg6.png'); ">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container-fluid">
-            <!-- Logo -->
+    <nav class="navbar navbar-expand-lg border-bottom">
+        <div class="container-fluid ">
             <a class="navbar-brand" href="#">
-                <img src="assets/images/logo.jpg" class="Cafeteria-Logo" alt="Cafeteria Logo" class="rounded-circle">
+                <img src="../assets/images/logo.jpg" class="Cafeteria-Logo rounded-circle" alt="Cafeteria Logo">
             </a>
 
-            <!-- Navbar Toggle Button for Mobile -->
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- Collapsible Menu -->
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
@@ -47,8 +49,8 @@ $res = all_products();
                 </ul>
                 <div class="d-flex align-items-center gap-3">
                     <div class="admin-profile d-flex align-items-center" id="profileToggle">
-                        <img src="assets/images/profile_img/<?= isset($_SESSION['profile_img']) ? $_SESSION['profile_img'] : 'default.jpg' ?>" class="rounded-circle" height="70">
-                        <span class="ms-2 fw-bold"><?= $_SESSION['name'] ?></span>
+                        <img src="../assets/images/profile_img/<?= isset($_SESSION['profile_img']) ? $_SESSION['profile_img'] : 'default.jpg' ?>" class="rounded-circle" height="70">
+                       <span class="ms-2 fw-bold">Moaz</span> <!--<?= $_SESSION['name'] ?> here you should replace the Moaz name with this text-->
                         <div class="dropdown-menu" id="dropdownMenu">
                             <a href="#">Profile</a>
                             <a href="logout.php">Logout</a>
@@ -62,9 +64,9 @@ $res = all_products();
     </nav>
 
 
-    <div class="col-9 container">
+    <div class="col-10 container">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="mb-3">All products</h2>         
+            <h2 class="mb-3 mt-5" style="color: white;">All products</h2>         
             <a href="admin_add_product.php?>"  class="btn btn-primary ">Add Product</a>
         </div>
     <table class="table table-striped" style="background-color: #7e6d63; color:aliceblue; border-radius: 5px;">
@@ -91,12 +93,21 @@ $res = all_products();
                     <td > <?= $row['status'] ?></td>
                     <td > <?= $row['category'] ?></td>
                     <td ><a href="./referral_pages/edit_product.php?id=<?= $row['id'] ?>" class="btn btn-primary">Edit</a></td>
-                    <td ><a href="./referral_pages/delete.php?id=<?= $row['id'] ?>" class="btn btn-danger">Delete</a></td>
+                    <td ><a href="./referral_pages/delete.php?id=<?= $row['id'] ?>&image=<?= $row['image'] ?>" class="btn btn-danger">Delete</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-
+    <div class="col-md-12 d-flex justify-content-center">
+        <ul class="pagination">
+            <?php for ($i=1; $i <= ceil($rows_count['rows_count']/10); $i++) { 
+                      if(ceil($rows_count['rows_count']/10)>1){ ?>
+                <li class="page-item"><a class="page-link" href="./referral_pages/pagination.php?page_no=<?=$i?>&from=all_products"><?=$i ?></a></li>
+                <?php }?>
+                <?php ?>
+            <?php ;}?>
+        </ul>
+    </div>
 
 
 
