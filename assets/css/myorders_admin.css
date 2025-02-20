@@ -1,90 +1,97 @@
 /* General Styles */
 body {
-    font-family: 'Poppins', sans-serif !important;
-    background-color: #1a1a1a !important; /* Dark background */
-    color: #d7ccc8 !important; /* Warm light text */
-    animation: fadeIn 0.5s ease-in;
+  font-family: "Poppins", sans-serif !important;
+  background-color: #1a1a1a !important; /* Dark background */
+  color: #d7ccc8 !important; /* Warm light text */
+  animation: fadeIn 0.5s ease-in;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Navbar Styles */
 .navbar {
-    background-color: #2d2d2d !important; /* Dark navbar */
-    border-bottom: 1px solid #444 !important;
+  background-color: #2d2d2d !important; /* Dark navbar */
+  border-bottom: 1px solid #444 !important;
 }
 
 .navbar-brand img {
-    border: 2px solid #444;
+  border: 2px solid #444;
 }
 
 .nav-link {
-    color: #d7ccc8 !important; /* Light text for navbar links */
+  color: #d7ccc8 !important; /* Light text for navbar links */
 }
 
 .nav-link:hover {
-    color: #689F38 !important; /* Green hover effect */
+  color: #689f38 !important; /* Green hover effect */
 }
 
 .nav-link.active {
-    color: #689F38 !important; /* Active link color */
-    font-weight: bold;
+  color: #689f38 !important; /* Active link color */
+  font-weight: bold;
 }
 
 /* Profile Section */
 .admin-profile img {
-    border: 2px solid #444;
+  border: 2px solid #444;
 }
 
 .dropdown-menu {
-    background-color: #2d2d2d; /* Dark dropdown */
-    border: 1px solid #444;
+  background-color: #2d2d2d; /* Dark dropdown */
+  border: 1px solid #444;
 }
 
 .dropdown-menu a {
-    color: #d7ccc8 !important; /* Light text for dropdown */
+  color: #d7ccc8 !important; /* Light text for dropdown */
 }
 
 .dropdown-menu a:hover {
-    background-color: #444; /* Hover effect for dropdown */
-    color: #689F38 !important;
+  background-color: #444; /* Hover effect for dropdown */
+  color: #689f38 !important;
 }
 
 /* Card Styles */
 .card {
-    background-color: #2d2d2d !important; /* Dark card background */
-    border: 1px solid #444 !important;
-    color: #d7ccc8 !important; /* Light text for cards */
+  background-color: #2d2d2d !important; /* Dark card background */
+  border: 1px solid #444 !important;
+  color: #d7ccc8 !important; /* Light text for cards */
 }
 
 .card-header {
-    background-color: #444 !important; /* Darker header */
-    border-bottom: 1px solid #666 !important;
+  background-color: #444 !important; /* Darker header */
+  border-bottom: 1px solid #666 !important;
 }
 
 .card-title {
-    color: #d7ccc8 !important; /* Light text for titles */
+  color: #d7ccc8 !important; /* Light text for titles */
 }
 
 /* Form Styles */
-.form-control, .form-select {
-    background-color: #333 !important; /* Dark input fields */
-    border: 1px solid #444 !important;
-    color: #d7ccc8 !important; /* Light text for inputs */
-    padding: 12px;
-    border-radius: 8px;
+.form-control,
+.form-select {
+  background-color: #333 !important; /* Dark input fields */
+  border: 1px solid #444 !important;
+  color: #d7ccc8 !important; /* Light text for inputs */
+  padding: 12px;
+  border-radius: 8px;
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: #689F38 !important; /* Green focus border */
-    box-shadow: 0 0 5px rgba(104, 159, 56, 0.5) !important;
+.form-control:focus,
+.form-select:focus {
+  border-color: #689f38 !important; /* Green focus border */
+  box-shadow: 0 0 5px rgba(104, 159, 56, 0.5) !important;
 }
 
 /* Product Cards */
 .product-card {
+
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     border: 1px solid #444 !important;
@@ -98,14 +105,35 @@ body {
 @keyframes cardEntrance {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #444 !important;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #2d2d2d; /* Dark product card */
+  animation: cardEntrance 0.6s ease-out;
+  animation-fill-mode: backwards;
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
 }
 
 .product-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.3); /* Enhanced hover effect */
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Enhanced hover effect */
 }
 /* Product Image Container */
-.product-image-container {
+
     height: 180px; /* Fixed height for the container */
     width: 100%; /* Full width of the card */
     overflow: hidden; /* Hide any overflow */
@@ -114,6 +142,7 @@ body {
     justify-content: center; /* Center horizontally */
     background-color: #333; /* Dark background for the container */
     border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+
 }
 
 /* Product Image */
@@ -123,75 +152,95 @@ body {
     object-fit: cover; /* Crop the image to cover the container */
     border-radius: 8px 8px 0 0; /* Match the container's rounded corners */
     transition: transform 0.3s ease; /* Smooth hover effect */
+  width: 100%; /* Ensures the image fills the container width */
+  height: 100%; /* Ensures the image fills the container height */
+  object-fit: cover; /* Crop the image to cover the container */
+  border-radius: 8px 8px 0 0; /* Match the container's rounded corners */
+  transition: transform 0.3s ease; /* Smooth hover effect */
 }
 
 /* Hover Effect for Images */
 .product-card:hover .product-image {
-    transform: scale(1.05); /* Slight zoom on hover */
+  transform: scale(1.05); /* Slight zoom on hover */
 }
 .text-primary {
-    color: #689F38 !important; /* Green text */
+  color: #689f38 !important; /* Green text */
 }
 
 .product-info {
+
     background-color: #2d2d2d; /* Dark product info */
     border-top: 1px solid #444 !important;
     padding: 1rem;
+
 }
 
 .product-info h6 {
-    color: #689F38 !important; /* Match button green */
+  color: #689f38 !important; /* Match button green */
 }
 
 /* Selected Products */
 .selected-product-item {
+
     background-color: #444; 
     border: 1px solid #666 !important;
     transition: background-color 0.2s;
     /* animation: slideIn 0.3s ease; */
+
 }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .selected-product-item:hover {
-    background-color: #555; /* Hover effect for selected items */
+  background-color: #555; /* Hover effect for selected items */
 }
 
 .product-thumbnail {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 /* Quantity Controls */
 .input-group .btn {
-    background-color: #666; /* Dark buttons */
-    border: 1px solid #666;
-    color: #d7ccc8;
+  background-color: #666; /* Dark buttons */
+  border: 1px solid #666;
+  color: #d7ccc8;
 }
 
 .input-group .btn:hover {
-    background-color: #689F38; /* Green hover effect */
-    border-color: #689F38;
+  background-color: #689f38; /* Green hover effect */
+  border-color: #689f38;
 }
 
 .quantity-input {
+
     background-color: #444 !important; /* Dark input */
     border: 1px solid #666 !important;
     color: #d7ccc8 !important; /* Light text */
+
 }
 
 /* Order Total */
 .order-total .h5 {
+
     color: #689F38 !important; /* Green total price */
+
 }
 
 /* Alerts */
 .alert {
+
     position: fixed;
     top: 90px; /* Below navbar */
     right: 20px;
@@ -200,42 +249,75 @@ body {
     background-color: #2d2d2d; /* Dark alert */
     border: 1px solid #444;
     color: #d7ccc8;
+
 }
 
 .alert-success {
-    background-color: #155724; /* Dark green for success */
-    border-color: #155724;
+  background-color: #155724; /* Dark green for success */
+  border-color: #155724;
 }
 
 .alert-danger {
-    background-color: #721c24; /* Dark red for error */
-    border-color: #721c24;
+  background-color: #721c24; /* Dark red for error */
+  border-color: #721c24;
 }
 
 /* Buttons */
 .btn-primary {
-    background-color: #689F38 !important; /* Green primary button */
-    border-color: #689F38 !important;
+  background-color: #689f38 !important; /* Green primary button */
+  border-color: #689f38 !important;
 }
 
 .btn-primary:hover {
-    background-color: #5a8c32 !important; /* Darker green on hover */
-    border-color: #5a8c32 !important;
+  background-color: #5a8c32 !important; /* Darker green on hover */
+  border-color: #5a8c32 !important;
 }
 
 .btn-outline-danger {
-    color: #dc3545; /* Red outline button */
-    border-color: #dc3545;
+  color: #dc3545; /* Red outline button */
+  border-color: #dc3545;
 }
 
 .btn-outline-danger:hover {
-    background-color: #dc3545; /* Red on hover */
-    color: #fff;
+  background-color: #dc3545; /* Red on hover */
+  color: #fff;
 }
 
 /* Price Styling */
 .price {
+
     color: #FFA726 !important; /* Warm orange for prices */
     font-weight: 600;
     letter-spacing: 0.5px;
 }
+
+
+.price::before {
+  content: "EGP ";
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 85px;
+  right: 85px;
+  background-color: #2d2d2d; /* Dark alert */
+  border: 1px solid #444;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  z-index: 1000;
+  margin-right: 20px;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px;
+  color: #333;
+  text-decoration: none !important;
+}
+.dropdown-menu a:hover {
+  background-color: transparent !important;
+  color: white;
+}
+
