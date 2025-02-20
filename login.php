@@ -71,7 +71,7 @@ if (!empty($_SESSION['error'])) {
 
                 <div class="form-group txt-c mt-10">
                     <button type="submit" class="btn mb-20">Login</button>
-                    <a href="forget_password.php">Forget Password?</a>
+                    <a href="forget_password.php" id="forget-password">Forget Password?</a>
                 </div>
             </form>
         </div>

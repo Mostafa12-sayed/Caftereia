@@ -2,13 +2,10 @@
 session_start();
 require_once 'connection_db.php';
 require_once 'myorders_function.php';
-
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+if (!isset($_SESSION['login'])) {
+    header('Location: myorders_user.php');
     exit;
 }
-
 $products = getProducts(); // Only get products, not users
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($room && $products_data) {
         $order_id = createOrder($user_id, $room, $notes, $products_data);
-        
+
         if ($order_id) {
             header('Location: myorders_user.php?success=1');
             exit;
@@ -30,58 +27,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Order</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="assets/css/myorders_admin.css" rel="stylesheet">
-</head>
-<body class="">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="assets/images/logo.jpg" class="Cafeteria-Logo rounded-circle" alt="Logo" height="70">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link active fw-bold" href="myorder_user.php">New Order</a></li>
-            </ul>
-            <div class="d-flex align-items-center gap-3">
-                <div class="admin-profile d-flex align-items-center" id="profileToggle">
-                    <img src="assets/images/profile_img/<?= $_SESSION['profile_img'] ?? 'default.jpg' ?>" class="rounded-circle" height="70">
-                    <span class="ms-2 fw-bold"><?= $_SESSION['name'] ?></span>
-                    <div class="dropdown-menu" id="dropdownMenu">
-                        <a href="#">Profile</a>
-                        <a href="logout.php">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
 
+<?php include('./assets/html/header.php') ?>
 <div class="container-fluid py-4">
     <?php if (isset($_GET['success'])): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        Order created successfully!
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Order created successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
     <?php endif; ?>
-    
+
     <?php if (isset($_GET['error'])): ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        Please enter your order.
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Please enter your order.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
     <?php endif; ?>
 
     <div class="row g-4">
@@ -127,19 +88,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="card-body">
                     <div class="row row-cols-2 row-cols-md-4 g-4">
                         <?php foreach ($products as $product): ?>
-                        <div class="col">
-                            <div class="product-card" data-id="<?= $product['id'] ?>">
-                                <div class="product-image-container">
-                                    <img src="assets/images/products/<?= htmlspecialchars($product['image']) ?>" 
-                                         class="product-image" 
-                                         alt="<?= htmlspecialchars($product['name']) ?>">
-                                </div>
-                                <div class="product-info">
-                                    <h6 class="mb-1"><?= htmlspecialchars($product['name']) ?></h6>
-                                    <span class="price"><?= number_format($product['price'], 2) ?> EGP</span>
+                            <div class="col">
+                                <div class="product-card" data-id="<?= $product['id'] ?>">
+                                    <div class="product-image-container">
+                                        <img src="assets/images/products/<?= htmlspecialchars($product['image']) ?>"
+                                            class="product-image"
+                                            alt="<?= htmlspecialchars($product['name']) ?>">
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="mb-1"><?= htmlspecialchars($product['name']) ?></h6>
+                                        <span class="price"><?= number_format($product['price'], 2) ?> EGP</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -147,8 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/myorders_admin.js"></script>
-</body>
-</html>
+
+<?php include('./assets/html/footer.php') ?>

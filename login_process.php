@@ -1,22 +1,18 @@
 <?php
 session_start();
-require_once('db_connection.php');
+require_once('./connection_db.php'); // تأكد من تضمين ملف الاتصال
 
-$con = OpenCon();
-
-// Sanitize input
 $email = trim($_POST['email']);
 $password = trim($_POST['password']);
 
 if (validateInput($email, $password)) {
-  authenticateUser($email, $password, $con);
+  authenticateUser($email, $password);
 } else {
   header("location: login.php");
+  exit;
 }
 
-CloseCon($con);
-
-// Function to validate input
+// دالة التحقق من صحة الإدخال
 function validateInput($email, $password)
 {
   $isValid = true;
@@ -34,33 +30,43 @@ function validateInput($email, $password)
   return $isValid;
 }
 
-// Function to authenticate user
-function authenticateUser($email, $password, $con)
+function authenticateUser($email, $password)
 {
-  $stmt = $con->prepare("SELECT * FROM users WHERE email = ?");
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
-    if (password_verify($password, $user['password'])) {
-      // Set session variables
-      $_SESSION['user_id'] = $user['id'];
-      $_SESSION['name'] = $user['name'];
-      $_SESSION['email'] = $user['email'];
-      $_SESSION['role'] = $user['role'];
-      $_SESSION['profile_image'] = $user['profile_image'];
-      $_SESSION['login'] = true;
-      header("location: myorders_admin.php");
-      exit;
-    } else {
-      $_SESSION['password_err'] = "Incorrect password";
-    }
-  } else {
-    $_SESSION['email_err'] = "Email not found";
-  }
+  global $pdo;
 
-  $stmt->close();
-  header("location: login.php");
-  exit;
+  try {
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->bindParam(":email", $email);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if (password_verify($password, $user['password'])) {
+        // بدء الجلسة وتخزين بيانات المستخدم
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['name'] = $user['name'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['profile_image'] = $user['profile_image'];
+        $_SESSION['login'] = true;
+        if ($user['role'] == "admin") {
+
+          header("location: myorders_admin.php");
+        } else {
+          header("location: myorders_user.php");
+        }
+        exit;
+      } else {
+        $_SESSION['password_err'] = "Incorrect password";
+      }
+    } else {
+      $_SESSION['email_err'] = "Email not found";
+    }
+
+    header("location: login.php");
+    exit;
+  } catch (PDOException $e) {
+    die("Database error: " . $e->getMessage());
+  }
 }

@@ -1,10 +1,9 @@
-
 <?php
 $host = 'localhost';
 $dbname = 'cafeteria_db';
 $username = 'root';
 $password = 'root';
-
+global $pdo;
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group txt-c">
                     <button type="submit" class="btn mb-20">Submit</button>
-                    <a href="login.php">Login</a>
+                    <a href="login.php" id="forgot-password">Login</a>
 
                 </div>
             </form>
