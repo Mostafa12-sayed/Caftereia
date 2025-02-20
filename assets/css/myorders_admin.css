@@ -91,6 +91,21 @@ body {
 
 /* Product Cards */
 .product-card {
+
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #444 !important;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #2d2d2d; /* Dark product card */
+    animation: cardEntrance 0.6s ease-out;
+    animation-fill-mode: backwards;
+}
+
+@keyframes cardEntrance {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   border: 1px solid #444 !important;
@@ -110,6 +125,7 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+
 }
 
 .product-card:hover {
@@ -117,19 +133,25 @@ body {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Enhanced hover effect */
 }
 /* Product Image Container */
-.product-image-container {
-  height: 180px; /* Fixed height for the container */
-  width: 100%; /* Full width of the card */
-  overflow: hidden; /* Hide any overflow */
-  display: flex; /* Use flexbox for centering */
-  align-items: center; /* Center vertically */
-  justify-content: center; /* Center horizontally */
-  background-color: #333; /* Dark background for the container */
-  border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+
+    height: 180px; /* Fixed height for the container */
+    width: 100%; /* Full width of the card */
+    overflow: hidden; /* Hide any overflow */
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    background-color: #333; /* Dark background for the container */
+    border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+
 }
 
 /* Product Image */
 .product-image {
+    width: 100%;    /* Ensures the image fills the container width */
+    height: 100%;   /* Ensures the image fills the container height */
+    object-fit: cover; /* Crop the image to cover the container */
+    border-radius: 8px 8px 0 0; /* Match the container's rounded corners */
+    transition: transform 0.3s ease; /* Smooth hover effect */
   width: 100%; /* Ensures the image fills the container width */
   height: 100%; /* Ensures the image fills the container height */
   object-fit: cover; /* Crop the image to cover the container */
@@ -146,9 +168,11 @@ body {
 }
 
 .product-info {
-  background-color: #2d2d2d; /* Dark product info */
-  border-top: 1px solid #444 !important;
-  padding: 1rem;
+
+    background-color: #2d2d2d; /* Dark product info */
+    border-top: 1px solid #444 !important;
+    padding: 1rem;
+
 }
 
 .product-info h6 {
@@ -157,10 +181,12 @@ body {
 
 /* Selected Products */
 .selected-product-item {
-  background-color: #444;
-  border: 1px solid #666 !important;
-  transition: background-color 0.2s;
-  /* animation: slideIn 0.3s ease; */
+
+    background-color: #444; 
+    border: 1px solid #666 !important;
+    transition: background-color 0.2s;
+    /* animation: slideIn 0.3s ease; */
+
 }
 
 @keyframes slideIn {
@@ -198,26 +224,32 @@ body {
 }
 
 .quantity-input {
-  background-color: #444 !important; /* Dark input */
-  border: 1px solid #666 !important;
-  color: #d7ccc8 !important; /* Light text */
+
+    background-color: #444 !important; /* Dark input */
+    border: 1px solid #666 !important;
+    color: #d7ccc8 !important; /* Light text */
+
 }
 
 /* Order Total */
 .order-total .h5 {
-  color: #689f38 !important; /* Green total price */
+
+    color: #689F38 !important; /* Green total price */
+
 }
 
 /* Alerts */
 .alert {
-  position: fixed;
-  top: 90px; /* Below navbar */
-  right: 20px;
-  z-index: 9999;
-  min-width: 300px;
-  background-color: #2d2d2d; /* Dark alert */
-  border: 1px solid #444;
-  color: #d7ccc8;
+
+    position: fixed;
+    top: 90px; /* Below navbar */
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    background-color: #2d2d2d; /* Dark alert */
+    border: 1px solid #444;
+    color: #d7ccc8;
+
 }
 
 .alert-success {
@@ -253,10 +285,12 @@ body {
 
 /* Price Styling */
 .price {
-  color: #ffa726 !important; /* Warm orange for prices */
-  font-weight: 600;
-  letter-spacing: 0.5px;
+
+    color: #FFA726 !important; /* Warm orange for prices */
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
+
 
 .price::before {
   content: "EGP ";
@@ -286,3 +320,4 @@ body {
   background-color: transparent !important;
   color: white;
 }
+
