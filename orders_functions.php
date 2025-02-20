@@ -1,52 +1,53 @@
 <?php
-require_once './db/db_connection.php';
-
+require_once('./connection_db.php'); // تأكد من تضمين ملف الاتصال
+global $pdo;
+if (isset($_GET['customer_name'])) {
+  filterOrder($_GET['customer_name'], $pdo);
+}
 if (isset($_GET['id']) && isset($_GET['status'])) {
-  // var_dump($_GET['status']);
-  $status = $_GET['status'];
+
+  $new_status = $_GET['status'];
   $id = (int) $_GET['id'];
-  // var_dump($id);
-  $con = OpenCon();  // Ensure this returns a MySQLi connection
-  $new_status = ($status === 'completed' ? 'pending' : 'completed');
-  // var_dump($new_status);
   $sql = "UPDATE orders SET status = '$new_status' WHERE id = '$id'";
-  $con->query($sql);
-  // return $new_status;
-  // var_dump($new_status);
+  $pdo->query($sql);
   $response = [
     'status' => 'success',
     'message' => 'Status changed successfully',
     'new_status' =>  $new_status,
     'order_id' => $id
   ];
-
-  // Set content type to application/json
   header('Content-Type: application/json');
-
-  // Encode response as JSON and output it
   echo  json_encode($response);
 }
-
-$orders = get_all_orders();
-function get_all_orders()
+$orders = get_all_orders($pdo);
+function get_all_orders($pdo)
 {
-  $con = OpenCon();  // Ensure this returns a MySQLi connection
   $sql = "SELECT orders.*, users.name AS user_name FROM orders JOIN users ON orders.user_id = users.id ORDER BY orders.id DESC";
-  $result = $con->query($sql);
+  $result = $pdo->query($sql);
   $orders = [];
 
-  while ($row = $result->fetch_assoc()) {
+  while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
     $orders[] = $row;
   }
 
   return $orders;
 }
 
+function filterOrder($customer_name, $pdo)
+{
+  $orders = [];
+  $sql = "SELECT orders.*, users.name 
+      FROM orders 
+      JOIN users ON orders.user_id = users.id
+      WHERE users.name LIKE '%$customer_name%'";
 
-// echo $orders;
+  $result = $pdo->query($sql);
+
+  while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    $orders[] = $row;
+  }
 
 
-// foreach ($orders as $order) {
-//   echo "done";
-//   echo $order['id'] . " - " . $order['user_id'] . " - " . $order['date'] . $order['user_name'] . "<br>";
-// }
+  header('Content-Type: application/json');
+  echo  json_encode($orders);
+}

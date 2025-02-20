@@ -4,8 +4,11 @@
   margin: 30px auto;
   border-radius: 3px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  /* overflow: scroll; */
 }
-
+.table-aria {
+  overflow-x: scroll !important;
+}
 .table-wrapper .btn {
   float: right;
   color: #333;
@@ -67,14 +70,35 @@
 .table-filter .filter-group {
   float: right;
   margin-left: 15px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-right: auto;
 }
-
+@media (max-width: 767px) {
+  .table-filter .row #filter {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .table-filter select,
+  .table-filter input {
+    width: 100% !important;
+  }
+}
+.table-filter .filter-group label {
+  color: orange;
+}
 .table-filter input,
 .table-filter select {
-  height: 34px;
+  height: 45px;
   border-radius: 3px;
   border-color: #ddd;
   box-shadow: none;
+  color: white !important;
+  font-size: 13px;
+  width: 200px !important;
+  /* padding: 10px; */
 }
 
 .table-filter {
@@ -84,7 +108,7 @@
 }
 
 .table-filter .btn {
-  height: 34px;
+  height: 45px;
 }
 
 .table-filter label {
@@ -110,6 +134,7 @@
 .filter-icon {
   float: right;
   margin-top: 7px;
+  font-size: 20px;
 }
 
 .filter-icon i {
@@ -123,11 +148,17 @@ table.table tr td {
   padding: 12px 15px;
   vertical-align: middle;
 }
-
+table.table {
+  overflow: scroll;
+  white-space: nowrap;
+}
 table.table tr th:first-child {
   width: 60px;
 }
-
+table th,
+table td {
+  white-space: nowrap;
+}
 table.table tr th:last-child {
   width: 80px;
 }
@@ -158,18 +189,27 @@ table.table td a:hover {
   cursor: pointer;
 }
 
-table.table td a.view {
+/* table.table td a.view {
   width: 30px;
   height: 30px;
   color: #2196f3;
   border: 2px solid;
   border-radius: 30px;
   text-align: center;
+} */
+table.table td a.success {
+  color: green;
 }
-
+table.table td a.pending {
+  color: orange;
+}
+table.table td a.deliver {
+  color: ;
+}
 table.table td a.view i {
   font-size: 22px;
   margin: 2px 0 0 1px;
+  margin-right: 5px;
 }
 
 table.table .avatar {
@@ -179,7 +219,7 @@ table.table .avatar {
 }
 
 .status {
-  font-size: 30px;
+  font-size: 20px;
   margin: 2px 2px 0 0;
   display: inline-block;
   vertical-align: middle;
@@ -201,7 +241,9 @@ table.table .avatar {
 .text-danger {
   color: #ff5b5b;
 }
-
+.text-blue {
+  color: #3283ec;
+}
 .pagination {
   float: right;
   margin: 0 0 5px;
@@ -261,12 +303,13 @@ table.table .avatar {
 }
 .order-details .order-details-content .price {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  font-size: 14px;
+  top: -25px;
+  right: -8px;
+  font-size: 13px;
   font-weight: bold;
-  color: white;
-  background-color: #03a9f4;
+  color: white !important;
+
   padding: 5px;
   border-radius: 5px;
+  background-color: #03a9f4;
 }

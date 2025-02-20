@@ -1,0 +1,22 @@
+tr:hover {
+  cursor: pointer;
+  background-color: #f1a23b;
+}
+
+.details {
+  color: black;
+  background-color: #f1a23b;
+  border-radius: 5px;
+}
+
+body {
+  background-image: url("../bg/bg5.png");
+}
+
+.Cafeteria-Logo {
+  width: 85px;
+}
+
+.nav-link:hover {
+  color: #7e6d63;
+}
